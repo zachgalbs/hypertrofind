@@ -59,7 +59,6 @@ struct WorkoutList: View {
         }
     }
 }
-
 #Preview {
     WorkoutList()
 }

@@ -9,14 +9,10 @@ struct YouTubeView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: WKWebView, context: Context) {
-        print("updateUIView called with videoID: \(videoID)")
-
         guard let url = URL(string: "https://www.youtube.com/embed/\(videoID)") else {
             print("Invalid URL")
             return
         }
-
-        print("Loading URL: \(url)")
         uiView.load(URLRequest(url: url))
     }
 }
@@ -26,153 +22,49 @@ struct Set {
     var reps: Int = 0
     var isButtonPressed: Bool = false
 }
+
 struct Exercise {
     var name: String = ""
     var sets: [Set]
 }
-struct VideoID {
+
+struct VideoID: Identifiable {
     var name: String = ""
     var id: String = ""
 }
 
 struct WorkoutLog: View {
     @State private var exercises: [Exercise] = [Exercise(name: "Pull Up", sets: [Set()])]
-    @State private var exerciseVideoIds: [VideoID] = [VideoID(name: "Pull Up", id: "iWpoegdfgtc"), VideoID(name: "Underhand Pull Up", id: "9JC1EwqezGY")]
+    @State var exerciseVideoIds: [VideoID] = [VideoID(name: "Pull Up", id: "iWpoegdfgtc"), VideoID(name: "Underhand Pull Up", id: "9JC1EwqezGY"), VideoID(name: "Inverted Row", id: "KOaCM1HMwU0"), VideoID(name: "Push Up", id: "mm6_WcoCVTA"), VideoID(name: "Inverted Skull Chrusher", id: "1lrjpLuXH4w")]
     @State private var showPopup = false
     @State private var newExerciseName = ""
     @State private var selectedVideoID: String?
     @State private var keyboardVisible: Bool = false
     let numbers = 0...25
-    
+
     var body: some View {
-        ScrollView() {
-            VStack(alignment: .leading, spacing: 15) {
-                Text("Day 2 | Friday").font(.largeTitle)
-                    .bold()
-                    .foregroundColor(Color.white)
-                    .padding(.leading, -20)
-                ForEach(exercises.indices, id: \.self) { exerciseIndex in
-                    workoutView(exerciseName: exercises[exerciseIndex].name, videoID: exerciseVideoIds[exerciseIndex].id) // The ID for the Pull Up Exercise
-                        .foregroundColor(.white)
-                        .bold()
-                        .font(.title)
-                    ForEach(exercises[exerciseIndex].sets.indices, id: \.self) { index in
-                        VStack(alignment: .leading, spacing: 0) {
-                            Text("Set \(index + 1)")
-                                .foregroundStyle(Color.white)
-                                .italic()
-                                .padding(.leading, 5)
-                                .opacity(exercises[exerciseIndex].sets[index].isButtonPressed ? 0.5 : 1.0)
-                            VStack(alignment: .leading, spacing: 0) {
-                                HStack() {
-                                    Text("Weight:").font(.title3)
-                                        .foregroundColor(Color.white)
-                                    TextField("45", text: $exercises[exerciseIndex].sets[index].weight)
-                                        .keyboardType(.numberPad)
-                                        .foregroundStyle(Color.white)
-                                        .padding(.leading, 4)
-                                        .border(Color.black)
-                                    Button(action: {
-                                        exercises[exerciseIndex].sets[index].isButtonPressed.toggle()
-                                    }) {
-                                        Image(systemName: exercises[exerciseIndex].sets[index].isButtonPressed ? "checkmark.circle.fill" : "checkmark.circle")
-                                            .padding(.leading, 50)
-                                            .frame(minWidth: 0, maxWidth: .infinity)
-                                            .foregroundStyle(Color.white)
-                                    }
-                                }
-                                HStack() {
-                                    Text("Reps Completed:").font(.title3)
-                                        .foregroundColor(Color.white)
-                                    Picker("Reps: ", selection: $exercises[exerciseIndex].sets[index].reps) {
-                                        ForEach(numbers, id: \.self) { number in
-                                            Text("\(number)").tag(number)
-                                        }
-                                    }
-                                    .tint(.white)
-                                    .pickerStyle(MenuPickerStyle())
-                                }
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(alignment: .leading, spacing: 15) {
+                    HeaderView()
+                    ForEach(exercises.indices, id: \.self) { exerciseIndex in
+                        ExerciseView(
+                            exercise: $exercises[exerciseIndex],
+                            videoID: exerciseVideoIds.first(where: { $0.name == exercises[exerciseIndex].name })?.id ?? "",
+                            selectedVideoID: $selectedVideoID,
+                            onDelete: {
+                                exercises.remove(at: exerciseIndex)
                             }
-                            .padding(.leading, 10)
-                        }
-                        .border(Color.black)
-                        .padding(.trailing, 20)
-                        .padding(.leading, 10)
+                        )
                     }
-                    VStack() {
-                        // BUTTON TO ADD SETS
-                        Button(action: {
-                            // CALLING ADDSET
-                            addSet(indexOfExercise: exerciseIndex)
-                        }) {
-                            Text("Add Set")
-                                .font(.custom("normalText", size: 15))
-                                .frame(width: 120, height: 30)
-                                .background(Color.black)
-                                .foregroundColor(Color.white)
-                                .cornerRadius(8)
-                        }
-                    }
-                    .padding(.leading, 10)
+                    AddExerciseButton(showPopup: $showPopup, exercises: $exercises, newExerciseName: newExerciseName)
+                    PopupView(showPopup: $showPopup, newExerciseName: $newExerciseName, exercises: $exercises, exerciseVideoIds: $exerciseVideoIds)
                 }
-                // BUTTON FOR ADDING EXERCISE
-                Button(action: {
-                    //Action for the button
-                    showPopup = true
-                    print(exercises[0].sets)
-                })
-                {
-                    Text("Add Exercise")
-                        .font(.custom("normalText", size: 15))
-                        .foregroundColor(Color.white)
-                        .frame(width: 120, height: 40)
-                        .background(Color.black)
-                        .cornerRadius(10)
-                }
-                // SHOWING THE POPUP
-                if showPopup {
-                    VStack {
-                        Picker("Exercise ", newExerciseName) {
-                            ForEach(numbers, id: \.self) { number in
-                                Text("\(number)").tag(number)
-                            }
-                        }
-                        Button("Add Exercise") {
-                            addExercise(name: newExerciseName)
-                            showPopup = false
-                            newExerciseName = ""
-                        }
-                        .padding()
-                    }
-                    .frame(width: 300, height: 200)
-                    .background(Color.white)
-                    .cornerRadius(12)
-                    .shadow(radius: 20)
-                    .overlay(
-                        Button(action: { showPopup = false }) {
-                            Image(systemName: "xmark.circle")
-                                .padding()
-                        },
-                        alignment: .topTrailing
-                    )
-                }
+                .padding(.leading, 50)
             }
-            .padding(.leading, 50)
-            .font(.title2)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
         .background(Color(red: 0.2, green: 0.2, blue: 0.2))
-        .overlay(
-            Group {
-                if keyboardVisible {
-                    Color.clear
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            self.hideKeyboard()
-                        }
-                }
-            }
-        )
+        .overlay(DismissKeyboardOverlay(keyboardVisible: $keyboardVisible))
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardDidShowNotification)) { _ in
             keyboardVisible = true
         }
@@ -180,29 +72,66 @@ struct WorkoutLog: View {
             keyboardVisible = false
         }
     }
-    private func hideKeyboard() {
-            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+}
+
+// Break down your view into smaller subviews
+
+struct HeaderView: View {
+    var body: some View {
+        Text("Day 2 | Friday")
+            .font(.largeTitle)
+            .bold()
+            .foregroundColor(Color.white)
+            .padding(.leading, -20)
     }
-    func addExercise(name: String) {
-        exercises.append(Exercise(name: name, sets: [Set()]))
-        showPopup = false
+}
+
+struct ExerciseView: View {
+    @Binding var exercise: Exercise
+    let videoID: String
+    @Binding var selectedVideoID: String?
+    let numbers = 0...25
+    var onDelete: () -> Void
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 15) {
+                WorkoutVideoView(exerciseName: exercise.name, videoID: videoID, selectedVideoID: $selectedVideoID)
+                    .foregroundColor(.white)
+                    .font(.title)
+                ForEach(exercise.sets.indices, id: \.self) { index in
+                    SetView(set: $exercise.sets[index], setNumber: index + 1)
+                        .foregroundColor(.white) // Apply white color to all text in SetView
+                        .font(.title) // Apply title font to all text in SetView
+                }
+                HStack {
+                    AddSetButton(exercise: $exercise)
+                    RemoveSetButton(exercise: $exercise)
+                }
+            }
+            Spacer()
+            Button(action: onDelete) {
+                Image(systemName: "xmark.circle")
+                    .foregroundColor(.red)
+                    .padding(10)
+            }
+        }
     }
-    func addSet(indexOfExercise: Int) {
-        //ADDING A BLANK SET TO THE LIST OF SETS
-        exercises[indexOfExercise].sets.append(Set())
-    }
-    func workoutView(exerciseName: String, videoID: String) -> some View {
+}
+
+struct WorkoutVideoView: View {
+    var exerciseName: String
+    var videoID: String
+    @Binding var selectedVideoID: String?
+
+    var body: some View {
         VStack {
             HStack {
                 Text(exerciseName)
                 Label("", systemImage: "video.fill")
                     .foregroundColor(Color.blue)
                     .onTapGesture {
-                        if selectedVideoID == videoID {
-                            selectedVideoID = nil // Hide the player if the same button is tapped
-                        } else {
-                            selectedVideoID = videoID // Show the player for the tapped exercise
-                        }
+                        selectedVideoID = selectedVideoID == videoID ? nil : videoID
                     }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -211,25 +140,194 @@ struct WorkoutLog: View {
                     .frame(height: 200)
                     .cornerRadius(12)
             }
-                Spacer()
         }
     }
 }
 
-struct ExerciseInputView: View {
-    @Binding var newExerciseName: String
-    var onAdd: () -> Void
+struct SetView: View {
+    @Binding var set: Set
+    let numbers = 0...25
+    let setNumber: Int
 
     var body: some View {
-        VStack {
-            TextField("Enter Exercise Name", text: $newExerciseName)
-                .padding()
-            Button("Add Exercise", action: onAdd)
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                Text("Set \(setNumber)")
+            }
+            HStack {
+                Text("Weight:")
+                    .font(.title3)
+                    .foregroundColor(Color.white)
+                TextField("0", text: $set.weight)
+                    .keyboardType(.numberPad)
+                    .foregroundStyle(Color.white)
+                    .padding(.leading, 4)
+                    .border(Color.black)
+                Spacer()
+                Button(action: {
+                    set.isButtonPressed.toggle()
+                }) {
+                    Image(systemName: set.isButtonPressed ? "checkmark.circle.fill" : "checkmark.circle")
+                        .padding(.leading, 50)
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                        .foregroundStyle(Color.white)
+                }
+            }
+            HStack {
+                Text("Reps Completed:")
+                    .font(.title3)
+                    .foregroundColor(Color.white)
+                Picker("Reps: ", selection: $set.reps) {
+                    ForEach(numbers, id: \.self) { number in
+                        Text("\(number)").tag(number)
+                    }
+                }
+                .tint(.white)
+                .pickerStyle(MenuPickerStyle())
+            }
         }
-        .padding()
+        .padding(.top, 10)
+        .padding(.leading, 10)
+        .border(Color.black)
+        .padding([.trailing, .leading], 10)
     }
 }
 
-#Preview {
-    WorkoutLog()
+
+struct AddSetButton: View {
+    @Binding var exercise: Exercise
+
+    var body: some View {
+        Button(action: {
+            exercise.sets.append(Set())
+        }) {
+            Text("Add Set")
+                .font(.custom("normalText", size: 15))
+                .frame(width: 120, height: 30)
+                .background(Color.black)
+                .foregroundColor(Color.white)
+                .cornerRadius(8)
+        }
+        .padding(.leading, 10)
+    }
 }
+struct RemoveSetButton: View {
+    @Binding var exercise: Exercise
+
+    var body: some View {
+        Button(action: {
+            if !exercise.sets.isEmpty {
+                exercise.sets.removeLast()
+            }
+        }) {
+            Text("Remove Set")
+                .font(.custom("normalText", size: 15))
+                .frame(width: 120, height: 30)
+                .background(Color.red)
+                .foregroundColor(Color.white)
+                .cornerRadius(8)
+        }
+    }
+}
+
+struct AddExerciseButton: View {
+    @Binding var showPopup: Bool
+    @Binding var exercises: [Exercise]
+    var newExerciseName: String
+
+    var body: some View {
+        Button(action: {
+            showPopup = true
+        }) {
+            Text("Add Exercise")
+                .font(.custom("normalText", size: 15))
+                .foregroundColor(Color.white)
+                .frame(width: 120, height: 40)
+                .background(Color.black)
+                .cornerRadius(10)
+        }
+    }
+}
+struct RemoveExerciseButton: View {
+    @Binding var exercises: [Exercise]
+        var exerciseIndex: Int
+
+        var body: some View {
+            Button(action: {
+                exercises.remove(at: exerciseIndex)
+            }) {
+                Text("Remove Exercise")
+                    .font(.custom("normalText", size: 15))
+                    .frame(width: 120, height: 30)
+                    .background(Color.red)
+                    .foregroundColor(Color.white)
+                    .cornerRadius(8)
+            }
+        }
+}
+
+struct PopupView: View {
+    @Binding var showPopup: Bool
+    @Binding var newExerciseName: String
+    @Binding var exercises: [Exercise]
+    @Binding var exerciseVideoIds: [VideoID]
+    @State private var selectedExerciseId: String = "iWpoegdfgtc"
+
+    var body: some View {
+        if showPopup {
+            VStack {
+                Picker("Exercise: ", selection: $selectedExerciseId) {
+                    ForEach(exerciseVideoIds) { videoId in
+                        Text(videoId.name).tag(videoId.id)
+                    }
+                }
+                Button("Add Exercise") {
+                    if let selectedExercise = exerciseVideoIds.first(where: { $0.id == selectedExerciseId }) {
+                        exercises.append(Exercise(name: selectedExercise.name, sets: [Set()]))
+                    }
+                    showPopup = false
+                    newExerciseName = ""
+                }
+                .padding()
+                .foregroundColor(Color.white)
+                .background(Color.black)
+            }
+            .frame(width: 300, height: 200)
+            .background(Color.white)
+            .cornerRadius(12)
+            .shadow(radius: 20)
+            .overlay(
+                Button(action: { showPopup = false }) {
+                    Image(systemName: "xmark.circle")
+                        .padding()
+                },
+                alignment: .topTrailing
+            )
+        }
+    }
+}
+
+
+struct DismissKeyboardOverlay: View {
+    @Binding var keyboardVisible: Bool
+
+    var body: some View {
+        Group {
+            if keyboardVisible {
+                Color.clear
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        hideKeyboard()
+                    }
+            }
+        }
+    }
+
+    private func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
+}
+#Preview {
+    WorkoutList()
+}
+
