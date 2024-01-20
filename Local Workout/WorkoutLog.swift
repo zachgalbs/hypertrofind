@@ -18,7 +18,7 @@ struct YouTubeView: UIViewRepresentable {
 }
 
 struct Set {
-    var weight: String = ""
+    var weight: Double = 0
     var reps: Int = 0
     var isButtonPressed: Bool = false
 }
@@ -34,7 +34,7 @@ struct VideoID: Identifiable {
 }
 
 struct WorkoutLog: View {
-    @State private var exercises: [Exercise] = [Exercise(name: "Pull Up", sets: [Set()])]
+    @State private var exercises: [Exercise] = []
     @State var exerciseVideoIds: [VideoID] = [VideoID(name: "Pull Up", id: "iWpoegdfgtc"), VideoID(name: "Underhand Pull Up", id: "9JC1EwqezGY"), VideoID(name: "Inverted Row", id: "KOaCM1HMwU0"), VideoID(name: "Push Up", id: "mm6_WcoCVTA"), VideoID(name: "Inverted Skull Chrusher", id: "1lrjpLuXH4w")]
     @State private var showPopup = false
     @State private var newExerciseName = ""
@@ -57,11 +57,11 @@ struct WorkoutLog: View {
                             }
                         )
                     }
-                    AddExerciseButton(showPopup: $showPopup, exercises: $exercises, newExerciseName: newExerciseName)
-                    PopupView(showPopup: $showPopup, newExerciseName: $newExerciseName, exercises: $exercises, exerciseVideoIds: $exerciseVideoIds)
                 }
                 .padding(.leading, 50)
             }
+            AddExerciseButton(showPopup: $showPopup, exercises: $exercises, newExerciseName: newExerciseName)
+            PopupView(showPopup: $showPopup, newExerciseName: $newExerciseName, exercises: $exercises, exerciseVideoIds: $exerciseVideoIds)
         }
         .background(Color(red: 0.2, green: 0.2, blue: 0.2))
         .overlay(DismissKeyboardOverlay(keyboardVisible: $keyboardVisible))
@@ -90,34 +90,51 @@ struct ExerciseView: View {
     @Binding var exercise: Exercise
     let videoID: String
     @Binding var selectedVideoID: String?
-    let numbers = 0...25
     var onDelete: () -> Void
 
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 15) {
-                WorkoutVideoView(exerciseName: exercise.name, videoID: videoID, selectedVideoID: $selectedVideoID)
-                    .foregroundColor(.white)
+        VStack(alignment: .leading, spacing: 15) {
+            HStack {
+                Text(exercise.name)
                     .font(.title)
-                ForEach(exercise.sets.indices, id: \.self) { index in
-                    SetView(set: $exercise.sets[index], setNumber: index + 1)
-                        .foregroundColor(.white) // Apply white color to all text in SetView
-                        .font(.title) // Apply title font to all text in SetView
-                }
-                HStack {
-                    AddSetButton(exercise: $exercise)
-                    RemoveSetButton(exercise: $exercise)
+                    .foregroundColor(.white)
+
+                Spacer() // This will push the content to the sides
+
+                Label("", systemImage: "video.fill")
+                    .foregroundColor(Color.blue)
+                    .onTapGesture {
+                        selectedVideoID = selectedVideoID == videoID ? nil : videoID
+                    }
+
+                Button(action: onDelete) {
+                    Image(systemName: "xmark.circle")
+                        .foregroundColor(.red)
+                        .padding(10)
                 }
             }
-            Spacer()
-            Button(action: onDelete) {
-                Image(systemName: "xmark.circle")
-                    .foregroundColor(.red)
-                    .padding(10)
+
+            if selectedVideoID == videoID {
+                YouTubeView(videoID: videoID)
+                    .frame(height: 200)
+                    .cornerRadius(12)
+            }
+
+            ForEach(exercise.sets.indices, id: \.self) { index in
+                SetView(set: $exercise.sets[index], setNumber: index + 1)
+                    .foregroundColor(.white)
+                    .font(.title)
+            }
+
+            HStack {
+                AddSetButton(exercise: $exercise)
+                RemoveSetButton(exercise: $exercise)
             }
         }
     }
 }
+
+
 
 struct WorkoutVideoView: View {
     var exerciseName: String
@@ -148,6 +165,13 @@ struct SetView: View {
     @Binding var set: Set
     let numbers = 0...25
     let setNumber: Int
+    
+    private let weightFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.maximum = 1000 // Maximum value
+        return formatter
+    }()
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -158,11 +182,12 @@ struct SetView: View {
                 Text("Weight:")
                     .font(.title3)
                     .foregroundColor(Color.white)
-                TextField("0", text: $set.weight)
+                TextField("lbs", value: $set.weight, formatter: weightFormatter)
                     .keyboardType(.numberPad)
                     .foregroundStyle(Color.white)
                     .padding(.leading, 4)
                     .border(Color.black)
+                    .font(.title3)
                 Spacer()
                 Button(action: {
                     set.isButtonPressed.toggle()
@@ -236,18 +261,28 @@ struct AddExerciseButton: View {
     var newExerciseName: String
 
     var body: some View {
-        Button(action: {
-            showPopup = true
-        }) {
-            Text("Add Exercise")
-                .font(.custom("normalText", size: 15))
-                .foregroundColor(Color.white)
-                .frame(width: 120, height: 40)
-                .background(Color.black)
-                .cornerRadius(10)
+        VStack {
+            Spacer() // Pushes everything below to the bottom
+            HStack {
+                Spacer() // Centers the button horizontally
+                Button(action: {
+                    showPopup = true
+                }) {
+                    Text("Add Exercise")
+                        .font(.custom("normalText", size: 15))
+                        .foregroundColor(Color.white)
+                        .frame(width: 300, height: 40)
+                        .background(Color.black)
+                        .cornerRadius(10)
+                }
+                Spacer() // Centers the button horizontally
+            }
+            .padding(.bottom, 20) // Adds some padding at the bottom
         }
     }
 }
+
+
 struct RemoveExerciseButton: View {
     @Binding var exercises: [Exercise]
         var exerciseIndex: Int
@@ -275,34 +310,40 @@ struct PopupView: View {
 
     var body: some View {
         if showPopup {
-            VStack {
-                Picker("Exercise: ", selection: $selectedExerciseId) {
-                    ForEach(exerciseVideoIds) { videoId in
-                        Text(videoId.name).tag(videoId.id)
+            HStack {
+                Spacer()
+                VStack {
+                    Picker("Exercise: ", selection: $selectedExerciseId) {
+                        ForEach(exerciseVideoIds) { videoId in
+                            Text(videoId.name).tag(videoId.id)
+                        }
                     }
-                }
-                Button("Add Exercise") {
-                    if let selectedExercise = exerciseVideoIds.first(where: { $0.id == selectedExerciseId }) {
-                        exercises.append(Exercise(name: selectedExercise.name, sets: [Set()]))
+                    Button("Add Exercise") {
+                        if let selectedExercise = exerciseVideoIds.first(where: { $0.id == selectedExerciseId }) {
+                            exercises.append(Exercise(name: selectedExercise.name, sets: [Set()]))
+                        }
+                        showPopup = false
+                        newExerciseName = ""
                     }
-                    showPopup = false
-                    newExerciseName = ""
+                    .padding()
+                    .foregroundColor(Color.white)
+                    .background(Color.black)
+                    .cornerRadius(10)
                 }
-                .padding()
-                .foregroundColor(Color.white)
-                .background(Color.black)
+                .frame(width: 300, height: 200)
+                .background(Color(red: 0.9, green: 0.9, blue: 0.9))
+                .cornerRadius(12)
+                .shadow(radius: 20)
+                .overlay(
+                    Button(action: { showPopup = false }) {
+                        Image(systemName: "xmark.circle")
+                            .padding()
+                    },
+                    alignment: .topTrailing
+                )
+                Spacer()
             }
-            .frame(width: 300, height: 200)
-            .background(Color.white)
-            .cornerRadius(12)
-            .shadow(radius: 20)
-            .overlay(
-                Button(action: { showPopup = false }) {
-                    Image(systemName: "xmark.circle")
-                        .padding()
-                },
-                alignment: .topTrailing
-            )
+            .padding(.top, 100)
         }
     }
 }

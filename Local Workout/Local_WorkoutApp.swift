@@ -8,9 +8,13 @@ struct Local_WorkoutApp: App {
     var body: some Scene {
         WindowGroup {
             TabView {
+                Home()
+                    .tabItem {
+                        Label("Statistics", systemImage: "chart.line.uptrend.xyaxis")
+                    }
                 WorkoutLog()
                     .tabItem {
-                        Label("WorkoutLog", systemImage: "figure.strengthtraining.traditional")
+                        Label("Routines", systemImage: "figure.strengthtraining.traditional")
                     }
                     .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
                 WorkoutList()
@@ -18,6 +22,7 @@ struct Local_WorkoutApp: App {
                         Label("Workout List", systemImage: "list.bullet")
                     }
                     .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
+                //LocationManager()
             }
         }
     }
