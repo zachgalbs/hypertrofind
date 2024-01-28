@@ -22,7 +22,10 @@ struct Local_WorkoutApp: App {
                         Label("Workout List", systemImage: "list.bullet")
                     }
                     .foregroundColor(/*@START_MENU_TOKEN@*/.blue/*@END_MENU_TOKEN@*/)
-                //LocationManager()
+                LocationView()
+                    .tabItem {
+                        Label("Map", systemImage: "map.fill")
+                    }
             }
         }
     }
