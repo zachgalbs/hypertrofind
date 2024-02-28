@@ -4,10 +4,11 @@
 //
 //  Created by Zachary on 11/13/23.
 //
-
+import Foundation
 import SwiftUI
 
 struct Home: View {
+    @ObservedObject var viewModel: SharedViewModel
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             Text("Hypertrofind").font(.largeTitle)
@@ -36,13 +37,9 @@ struct Home: View {
             Spacer()
         }       
         .padding(.leading, 50)
+        .padding(.top, 20)
         .font(.title2)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(Color(red: 0.2, green: 0.2, blue: 0.2))
     }
-}
-
-
-#Preview {
-    Home()
 }

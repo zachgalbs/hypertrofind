@@ -34,8 +34,9 @@ struct VideoID: Identifiable {
 }
 
 struct WorkoutLog: View {
+    @ObservedObject var viewModel: SharedViewModel
     @State private var exercises: [Exercise] = []
-    @State var exerciseVideoIds: [VideoID] = [VideoID(name: "Pull Up", id: "iWpoegdfgtc"), VideoID(name: "Underhand Pull Up", id: "9JC1EwqezGY"), VideoID(name: "Inverted Row", id: "KOaCM1HMwU0"), VideoID(name: "Push Up", id: "mm6_WcoCVTA"), VideoID(name: "Inverted Skull Chrusher", id: "1lrjpLuXH4w")]
+    @State var exerciseVideoIds: [VideoID] = [VideoID(name: "Pull Up", id: "iWpoegdfgtc"), VideoID(name: "Underhand Pull Up", id: "9JC1EwqezGY"), VideoID(name: "Inverted Row", id: "KOaCM1HMwU0"), VideoID(name: "Push Up", id: "mm6_WcoCVTA"), VideoID(name: "Inverted Skull Crusher", id: "1lrjpLuXH4w")]
     @State private var showPopup = false
     @State private var newExerciseName = ""
     @State private var selectedVideoID: String?
@@ -83,6 +84,12 @@ struct HeaderView: View {
             .bold()
             .foregroundColor(Color.white)
             .padding(.leading, -20)
+    }
+}
+
+struct locationBar: View {
+    var body: some View {
+        Text("")
     }
 }
 
