@@ -44,7 +44,7 @@
       "force": "pull",
       "level": "intermediate",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "ab crunch machine",
       "primaryMuscles": [
         "abdominals"
       ],
@@ -1876,7 +1876,7 @@
       "force": null,
       "level": "beginner",
       "mechanic": null,
-      "equipment": "machine",
+      "equipment": "bicycle machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -2808,7 +2808,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "calf-raise machine",
       "primaryMuscles": [
         "traps"
       ],
@@ -4308,7 +4308,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "chest"
       ],
@@ -4378,7 +4378,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "dip machine",
       "primaryMuscles": [
         "triceps"
       ],
@@ -4400,7 +4400,7 @@
       "force": "push",
       "level": "intermediate",
       "mechanic": "compound",
-      "equipment": "other",
+      "equipment": "pull up machine",
       "primaryMuscles": [
         "chest"
       ],
@@ -5461,7 +5461,7 @@
       "force": null,
       "level": "intermediate",
       "mechanic": null,
-      "equipment": "machine",
+      "equipment": "elliptical machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -6278,7 +6278,7 @@
       "force": "pull",
       "level": "intermediate",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "glute-ham machine",
       "primaryMuscles": [
         "hamstrings"
       ],
@@ -6437,7 +6437,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "hack squat machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -7729,7 +7729,7 @@
       "force": null,
       "level": "beginner",
       "mechanic": null,
-      "equipment": "machine",
+      "equipment": "treadmill",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -8158,7 +8158,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "other",
+      "equipment": "parallel bar",
       "primaryMuscles": [
         "abdominals"
       ],
@@ -8576,7 +8576,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "leg extension machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -8615,7 +8615,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "leg press machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -8656,7 +8656,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "chest press machine",
       "primaryMuscles": [
         "chest"
       ],
@@ -8696,7 +8696,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "chest press machine",
       "primaryMuscles": [
         "chest"
       ],
@@ -8716,7 +8716,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "high row machine",
       "primaryMuscles": [
         "middle back"
       ],
@@ -9336,7 +9336,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "lying leg curl machine",
       "primaryMuscles": [
         "hamstrings"
       ],
@@ -9354,7 +9354,7 @@
       "force": "push",
       "level": "intermediate",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "lying squat machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -9495,7 +9495,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "chest press machine",
       "primaryMuscles": [
         "chest"
       ],
@@ -9519,7 +9519,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "bicep curl machine",
       "primaryMuscles": [
         "biceps"
       ],
@@ -9537,7 +9537,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "preacher curl machine",
       "primaryMuscles": [
         "biceps"
       ],
@@ -9556,7 +9556,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "shoulder press machine",
       "primaryMuscles": [
         "shoulders"
       ],
@@ -9577,7 +9577,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "tricep extension machine",
       "primaryMuscles": [
         "triceps"
       ],
@@ -9824,7 +9824,7 @@
       "force": "push",
       "level": "intermediate",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "hack squat machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -9849,7 +9849,7 @@
       "force": "push",
       "level": "intermediate",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "leg press machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -11103,7 +11103,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "other",
+      "equipment": "parallel bar",
       "primaryMuscles": [
         "triceps"
       ],
@@ -12403,7 +12403,7 @@
       "force": "pull",
       "level": "intermediate",
       "mechanic": null,
-      "equipment": "machine",
+      "equipment": "bench",
       "primaryMuscles": [
         "hamstrings"
       ],
@@ -12425,7 +12425,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "pec deck machine",
       "primaryMuscles": [
         "shoulders"
       ],
@@ -13139,7 +13139,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "seated calf raise machine",
       "primaryMuscles": [
         "calves"
       ],
@@ -13453,7 +13453,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "seated leg curl machine",
       "primaryMuscles": [
         "hamstrings"
       ],
@@ -14175,7 +14175,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "leg extension machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -14524,7 +14524,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "traps"
       ],
@@ -14545,7 +14545,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "chest"
       ],
@@ -14567,7 +14567,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "middle back"
       ],
@@ -14591,7 +14591,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "calves"
       ],
@@ -14610,7 +14610,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "triceps"
       ],
@@ -14632,7 +14632,7 @@
       "force": null,
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "chest"
       ],
@@ -14654,7 +14654,7 @@
       "force": "pull",
       "level": "intermediate",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "hamstrings"
       ],
@@ -14680,7 +14680,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "abdominals"
       ],
@@ -14698,7 +14698,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "chest"
       ],
@@ -14720,7 +14720,7 @@
       "force": "push",
       "level": "intermediate",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -14741,7 +14741,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "shoulders"
       ],
@@ -14763,7 +14763,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "shoulders"
       ],
@@ -14784,7 +14784,7 @@
       "force": "push",
       "level": "intermediate",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -14807,7 +14807,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "calves"
       ],
@@ -14827,7 +14827,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -14852,7 +14852,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "hamstrings"
       ],
@@ -14874,7 +14874,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "traps"
       ],
@@ -14897,7 +14897,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "compound",
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -15490,7 +15490,7 @@
       "force": null,
       "level": "intermediate",
       "mechanic": null,
-      "equipment": "machine",
+      "equipment": "smith machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -15741,7 +15741,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "standing calf raise machine",
       "primaryMuscles": [
         "calves"
       ],
@@ -16043,7 +16043,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "standing leg curl machine",
       "primaryMuscles": [
         "hamstrings"
       ],
@@ -16468,7 +16468,7 @@
       "force": null,
       "level": "intermediate",
       "mechanic": null,
-      "equipment": "machine",
+      "equipment": "stairmaster machine",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -17037,7 +17037,7 @@
       "force": "push",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "thigh abductor machine",
       "primaryMuscles": [
         "abductors"
       ],
@@ -17057,7 +17057,7 @@
       "force": "pull",
       "level": "beginner",
       "mechanic": "isolation",
-      "equipment": "machine",
+      "equipment": "thigh adductor machine",
       "primaryMuscles": [
         "adductors"
       ],
@@ -17634,7 +17634,7 @@
       "force": null,
       "level": "beginner",
       "mechanic": null,
-      "equipment": "machine",
+      "equipment": "treadmill",
       "primaryMuscles": [
         "quadriceps"
       ],
@@ -17761,7 +17761,7 @@
       "force": "pull",
       "level": "intermediate",
       "mechanic": "compound",
-      "equipment": "other",
+      "equipment": "pull up bar",
       "primaryMuscles": [
         "lats"
       ],
@@ -17771,12 +17771,33 @@
       ],
       "instructions": [
         "Attach a weight to a dip belt and secure it around your waist. Grab the pull-up bar with the palms of your hands facing forward. For a medium grip, your hands should be spaced at shoulder width. Both arms should be extended in front of you holding the bar at the chosen grip.",
-        "Youâ€™ll want to bring your torso back about 30 degrees while creating a curvature in your lower back and sticking your chest out. This will be your starting position.",
+        "You'll want to bring your torso back about 30 degrees while creating a curvature in your lower back and sticking your chest out. This will be your starting position.",
         "Now, exhale and pull your torso up until your head is above your hands. Concentrate on squeezing yourshoulder blades back and down as you reach the top contracted position.",
         "After a brief moment at the top contracted position, inhale and slowly lower your torso back to the starting position with your arms extended and your lats fully stretched."
       ],
       "category": "strength"
     },
+    {
+    "name": "Pull Up",
+    "force": "pull",
+    "level": "intermediate",
+    "mechanic": "compound",
+    "equipment": "pull up bar",
+    "primaryMuscles": [
+      "lats"
+    ],
+    "secondaryMuscles": [
+      "biceps",
+      "middle back"
+    ],
+    "instructions": [
+      "Grab the pull-up bar with the palms of your hands facing forward. For a medium grip, your hands should be spaced at shoulder width. Both arms should be extended in front of you holding the bar at the chosen grip.",
+      "You'll want to bring your torso back about 30 degrees while creating a curvature in your lower back and sticking your chest out. This will be your starting position.",
+      "Now, exhale and pull your torso up until your head is above your hands. Concentrate on squeezing yourshoulder blades back and down as you reach the top contracted position.",
+      "After a brief moment at the top contracted position, inhale and slowly lower your torso back to the starting position with your arms extended and your lats fully stretched."
+    ],
+    "category": "strength"
+  },
     {
       "name": "Weighted Sissy Squat",
       "force": "push",

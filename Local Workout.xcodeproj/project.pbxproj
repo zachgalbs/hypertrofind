@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		684D72E12B9E3FB100BC6268 /* InstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684D72E02B9E3FB100BC6268 /* InstructionView.swift */; };
+		6857A9602B8EDD1E00688271 /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = 6857A95F2B8EDD1E00688271 /* exercises.json */; };
 		6861A6312B81852600744D2F /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6861A6302B81852600744D2F /* FirebaseAnalytics */; };
 		6861A6332B81852600744D2F /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 6861A6322B81852600744D2F /* FirebaseAnalyticsOnDeviceConversion */; };
 		6861A6352B81852600744D2F /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6861A6342B81852600744D2F /* FirebaseAnalyticsSwift */; };
@@ -65,7 +67,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		684D72E02B9E3FB100BC6268 /* InstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionView.swift; sourceTree = "<group>"; };
+		6857A95F2B8EDD1E00688271 /* exercises.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exercises.json; sourceTree = "<group>"; };
 		689D90AA2B7342FB00098874 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		68A78F092B9D595800D48A35 /* Local-Workout-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Local-Workout-Info.plist"; sourceTree = SOURCE_ROOT; };
 		B6281D432B0338B7000BC38E /* Local Workout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Local Workout.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6281D462B0338B7000BC38E /* Local_WorkoutApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Local_WorkoutApp.swift; sourceTree = "<group>"; };
 		B6281D482B0338B7000BC38E /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
@@ -156,11 +161,14 @@
 		B6281D452B0338B7000BC38E /* Local Workout */ = {
 			isa = PBXGroup;
 			children = (
+				68A78F092B9D595800D48A35 /* Local-Workout-Info.plist */,
 				B6281D462B0338B7000BC38E /* Local_WorkoutApp.swift */,
+				684D72E02B9E3FB100BC6268 /* InstructionView.swift */,
 				B6F631602B17B2570040ED95 /* WorkoutLog.swift */,
 				B665A8902B2AD83D00ED53B2 /* LocationManager.swift */,
 				B6E01D4C2B06906600C4D5EA /* WorkoutList.swift */,
 				B6281D482B0338B7000BC38E /* Home.swift */,
+				6857A95F2B8EDD1E00688271 /* exercises.json */,
 				B6281D4A2B0338B9000BC38E /* Assets.xcassets */,
 				689D90AA2B7342FB00098874 /* GoogleService-Info.plist */,
 				B6281D4C2B0338B9000BC38E /* Preview Content */,
@@ -330,6 +338,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6281D4E2B0338B9000BC38E /* Preview Assets.xcassets in Resources */,
+				6857A9602B8EDD1E00688271 /* exercises.json in Resources */,
 				B6281D4B2B0338B9000BC38E /* Assets.xcassets in Resources */,
 				689D90AB2B7342FB00098874 /* GoogleService-Info.plist in Resources */,
 			);
@@ -361,6 +370,7 @@
 				B665A8912B2AD83D00ED53B2 /* LocationManager.swift in Sources */,
 				B6281D492B0338B7000BC38E /* Home.swift in Sources */,
 				B6281D472B0338B7000BC38E /* Local_WorkoutApp.swift in Sources */,
+				684D72E12B9E3FB100BC6268 /* InstructionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -527,6 +537,7 @@
 				DEVELOPMENT_TEAM = 8DGT7FKTPZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Local-Workout-Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to locate nearby fitness centers";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -557,6 +568,7 @@
 				DEVELOPMENT_TEAM = 8DGT7FKTPZ;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Local-Workout-Info.plist";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to locate nearby fitness centers";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

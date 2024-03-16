@@ -73,6 +73,7 @@ class LocationManagerClass: NSObject, ObservableObject, CLLocationManagerDelegat
         }
     }
 }
+
 struct LocationView: View {
     @ObservedObject var viewModel: SharedViewModel
     @StateObject private var locationManager = LocationManagerClass()
@@ -85,7 +86,8 @@ struct LocationView: View {
     @State private var shouldShowList = true;
     @State private var isWorkoutLogActive = false
     @State private var selectedWorkoutLog: WorkoutLog?
-    @State private var availableEquipment: [String] = []
+    @State public var availableEquipment: [String] = []
+    @State private var possibleExercises: [String] = []
 
     
     var body: some View {
@@ -144,7 +146,9 @@ struct LocationView: View {
                                         Text(annotation.title ?? "Unknown location")
                                             .onTapGesture {
                                                 print((annotation.title ?? "") + " clicked!")
-                                                print(fetchLocationDocument(documentId: annotation.title ?? "master location"))
+                                                //printContentsOfJSON()
+                                                
+                                                givePossibleExercises(documentId: annotation.title ?? "master location")
                                                 viewModel.showWorkoutLog = true; // Update the shared view model
                                             }
                                     }
@@ -226,7 +230,7 @@ struct LocationView: View {
             }
         }
     }
-        
+    
     
     private func performSearch() {
         print("performSearch")
@@ -257,7 +261,7 @@ struct LocationView: View {
         }
     }
     // Assuming this function is part of your SwiftUI view
-    func fetchLocationDocument(documentId: String) {
+    func fetchLocationDocument(documentId: String, completion: @escaping () -> Void) {
         let db = Firestore.firestore()
         let docRef = db.collection("locations").document(documentId.lowercased())
 
@@ -265,8 +269,8 @@ struct LocationView: View {
             if let document = document, document.exists {
                 if let equipmentList = document.get("equipment") as? [String] {
                     DispatchQueue.main.async {
-                        self.availableEquipment = equipmentList
-                        print(equipmentList);
+                        availableEquipment = equipmentList
+                        completion()
                     }
                 } else {
                     print("No equipment list found or it's not in the expected format.")
@@ -292,8 +296,84 @@ struct LocationView: View {
         let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: longDelta)//MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: longDelta)
         return MKCoordinateRegion(center: midpoint, span: span)
     }
-}
+    func printContentsOfJSON() {
+        guard let url = Bundle.main.url(forResource: "exercises", withExtension: "json") else {
+            print("JSON file not found")
+            return
+        }
 
+        do {
+            let data = try Data(contentsOf: url)
+            let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+            
+            if let jsonDictionary = jsonObject as? [String: Any], // Check if it's a dictionary
+               let exercises = jsonDictionary["exercises"] as? [[String: Any]] { // Access the "exercises" key
+                // Now you have an array of exercise dictionaries
+                for exercise in exercises {
+                    if let name = exercise["name"] as? String {
+                        print("Exercise Name: \(name)")
+                        // You can similarly print other details if needed
+                    }
+                }
+            }
+        } catch {
+            print("Error reading or parsing JSON file: \(error)")
+        }
+    }
+    struct Exercise: Decodable {
+        let name: String
+        let force: String?
+        let level: String
+        let mechanic: String?
+        let equipment: String?
+        let primaryMuscles: [String]
+        let secondaryMuscles: [String]
+        let instructions: [String]
+        let category: String
+    }
+
+    struct ExerciseData: Decodable {
+        let exercises: [Exercise]
+    }
+    // function to give possible exercises given a list of equipment
+    func givePossibleExercises(documentId: String) {
+        viewModel.shouldGenerateExercises = false
+        print("running givePossibleExercises!")
+        guard let url = Bundle.main.url(forResource: "exercises", withExtension: "json") else {
+            print("JSON file not found")
+            return
+        }
+        
+        do {
+            let data = try Data(contentsOf: url)
+            let decoder = JSONDecoder()
+            let exercisesData = try decoder.decode(ExerciseData.self, from: data)
+            
+            fetchLocationDocument(documentId: documentId) {
+                // Process the filtered exercises
+                let possibleExercises = exercisesData.exercises.filter { exercise in
+                    guard let equipment = exercise.equipment else {
+                        return false
+                    }
+                    if (self.availableEquipment.contains(equipment) || equipment == "other") && exercise.force == self.viewModel.split.lowercased() && (exercise.primaryMuscles.contains("chest") || exercise.primaryMuscles.contains("triceps") || exercise.primaryMuscles.contains("shoulders")) {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+                
+                // Perform UI updates or modifications to `self` directly if needed, mindful of the execution context
+                DispatchQueue.main.async {
+                    self.viewModel.possibleExercises = possibleExercises
+                    self.viewModel.shouldGenerateExercises = true
+                }
+            }
+        } catch {
+            print("Error decoding JSON: \(error)")
+        }
+    }
+
+}
 
 struct MapView: UIViewRepresentable {
     @Binding var region: MKCoordinateRegion

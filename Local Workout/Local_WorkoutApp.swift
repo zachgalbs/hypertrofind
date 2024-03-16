@@ -34,16 +34,22 @@ struct Local_WorkoutApp: App {
                         Label("Map", systemImage: "map.fill")
                     }
                     .tag(AppTab.map)
+                InstructionsView(viewModel: sharedViewModel)
+                    .tabItem {
+                        Label("Instructions", systemImage: "circle.fill")
+                    }
+                    .tag(AppTab.instruction)
             }
         }
     }
 }
 enum AppTab {
-    case statistics, routines, map
+    case statistics, routines, map, instruction
 }
 
 class SharedViewModel: ObservableObject {
     @Published var selectedTab: AppTab = .statistics
+    @Published var shouldGenerateExercises: Bool = false
     @Published var showWorkoutLog: Bool = false {
         didSet {
             if showWorkoutLog {
@@ -51,16 +57,23 @@ class SharedViewModel: ObservableObject {
             }
         }
     }
+    @Published var showInstructionView: Bool = false {
+        didSet {
+            if showInstructionView {
+                selectedTab = .instruction
+            }
+        }
+    }
+    @Published var split: String = "Push"
+    @Published var possibleExercises: [LocationView.Exercise] = []
+    @Published var currentInstructions: String?
     private var firestoreManager = FirestoreManager()
-        
-        init() {
-            fetchDataFromFirestore()
-        }
-        
-        func fetchDataFromFirestore() {
-            firestoreManager.fetchData()
-        }
+
+    init() {
+        firestoreManager.fetchData()
+    }
 }
+
 class FirestoreManager: ObservableObject {
     private var db = Firestore.firestore()
     
