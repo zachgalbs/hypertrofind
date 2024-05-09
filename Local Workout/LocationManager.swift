@@ -5,28 +5,40 @@ import FirebaseCore
 import FirebaseFirestore
 
 class LocationManagerClass: NSObject, ObservableObject, CLLocationManagerDelegate, MKLocalSearchCompleterDelegate {
-    private let locationManager = CLLocationManager()
+    var viewModel: SharedViewModel
+    var locationManager: CLLocationManager!
     let searchCompleter = MKLocalSearchCompleter()
     @Published var region = MKCoordinateRegion()
     @Published var searchResults = [MKLocalSearchCompletion]()
     @Published var locationAnnotation = MKPointAnnotation()
     @Published var locationAnnotations: [MKPointAnnotation] = []
-    
 
-    override init() {
+    init(viewModel: SharedViewModel) {
+        self.viewModel = viewModel
         super.init()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestWhenInUseAuthorization()
-        locationManager.startUpdatingLocation()
+        self.locationManager = CLLocationManager()
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest // Set the desired accuracy
+        self.locationManager.requestWhenInUseAuthorization() // Request appropriate authorization from the user
+        self.locationManager.startUpdatingLocation() // Start receiving location updates
 
         searchCompleter.delegate = self
         
         populatePredefinedLocations()
     }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            viewModel.userLocation = location
+            
+            // If you want to center the map on the user's location
+            let region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+            self.region = region // Assuming you want to update @Published var region to reflect this new region
+            // Note: If you're using this region to update a map view in SwiftUI, ensure the view observes this @Published property and updates accordingly
+        }
+    }
     private func populatePredefinedLocations() {
         let locations = [
-            ("Pardee Park", CLLocationCoordinate2D(latitude: 37.444917, longitude: -122.145953)),
+            ("Pardee Park", CLLocationCoordinate2D(latitude: 37.450013, longitude: -122.1422688)),
             ("Rinconada Park", CLLocationCoordinate2D(latitude: 37.444293, longitude: -122.142537)),
             ("YMCA", CLLocationCoordinate2D(latitude: 37.445697, longitude: -122.157272))
         ]
@@ -37,12 +49,6 @@ class LocationManagerClass: NSObject, ObservableObject, CLLocationManagerDelegat
             annotation.coordinate = location.1
             self.locationAnnotations.append(annotation)
         }
-    }
-
-    func getLocation(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        print("brah");
-        guard let location = locations.last else { return }
-        region = MKCoordinateRegion(center: location.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
     }
 
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
@@ -76,7 +82,7 @@ class LocationManagerClass: NSObject, ObservableObject, CLLocationManagerDelegat
 
 struct LocationView: View {
     @ObservedObject var viewModel: SharedViewModel
-    @StateObject private var locationManager = LocationManagerClass()
+    @State private var locationManager: LocationManagerClass
     @State private var searchText = ""
     @State private var keyboardHeight: CGFloat = 0
     @State private var keyboardActive = true;
@@ -86,9 +92,14 @@ struct LocationView: View {
     @State private var shouldShowList = true;
     @State private var isWorkoutLogActive = false
     @State private var selectedWorkoutLog: WorkoutLog?
-    @State public var availableEquipment: [String] = []
     @State private var possibleExercises: [String] = []
+    @State private var isLocationConfirmed = false
+    @State private var shouldConfirm = false
 
+    init(viewModel: SharedViewModel) {
+        self.locationManager = LocationManagerClass(viewModel: viewModel)
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -107,7 +118,6 @@ struct LocationView: View {
                             locationManager.searchCompleter.queryFragment = searchText
                         },
                         onCommit: {
-                            // Call performSearch when the user hits return
                             performSearch()
                         })
                         .padding(7)
@@ -131,6 +141,24 @@ struct LocationView: View {
                                             .padding(.trailing, 8)
                                     }
                                 }
+                                if (!isLocationConfirmed && shouldConfirm) {
+                                    
+                                    Button(action: {
+                                        viewModel.showWorkoutLog = true; // Update the shared view model
+                                        viewModel.shouldGenerateExercises = true;
+                                        isLocationConfirmed = true
+                                    }) {
+                                        Text("Confirm")
+                                            .fontWeight(.bold) // Make the text bold
+                                            .foregroundColor(.white) // Set text color to white
+                                            .frame(minWidth: 0, maxWidth: .infinity) // Make the button take up the full available width
+                                            .padding(.vertical, 10) // Increase padding vertically to make the button taller
+                                    }
+                                    .background(Color.blue) // Set the background color to blue
+                                    .clipShape(RoundedRectangle(cornerRadius: 10)) // Round the corners of the button
+                                    .padding(.trailing, 50) // Add some horizontal padding to the entire button, reducing its width a bit from the full screen width
+                                    .shadow(color: .gray, radius: 5, x: 0, y: 5) // Optional: Add a shadow for a bit of depth
+                                }
                             }
                         )
                         .padding(.horizontal, 10)
@@ -139,17 +167,19 @@ struct LocationView: View {
                                 Section(header:  Text("Recommended Locations:")
                                 .textCase(.none)
                                 .bold()
-                                .foregroundStyle(Color.black)
+                                .foregroundStyle(Color.white)
                                 .font(.title3))
                                 {
                                     ForEach(locationManager.locationAnnotations, id: \.self) { annotation in
                                         Text(annotation.title ?? "Unknown location")
                                             .onTapGesture {
                                                 print((annotation.title ?? "") + " clicked!")
-                                                //printContentsOfJSON()
-                                                
-                                                givePossibleExercises(documentId: annotation.title ?? "master location")
-                                                viewModel.showWorkoutLog = true; // Update the shared view model
+                                                searching = true
+                                                shouldConfirm = true
+                                                shouldShowList = false
+                                                viewModel.currentLocation = annotation
+                                                performSearch()
+                                                locationManager.searchResults = []
                                             }
                                     }
                                 }
@@ -161,7 +191,8 @@ struct LocationView: View {
                         }
 
                         List(locationManager.searchResults, id: \.self) { result in
-                            Text(result.title).onTapGesture {
+                            Text("\(result.title), \(result.subtitle)").onTapGesture {
+                                print (result)
                                 searchText = result.title
                                 searching = true;
                                 shouldShowList = false;
@@ -233,69 +264,53 @@ struct LocationView: View {
     
     
     private func performSearch() {
-        print("performSearch")
+        print("performSearch (user location: \(viewModel.userLocation)); id: \(viewModel.id)")
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchText
 
         let search = MKLocalSearch(request: request)
         search.start { response, _ in
-            guard let response = response else {
+            guard response == response else {
                 return
             }
-
-            if let firstItem = response.mapItems.first {
-                let searchCoordinate = firstItem.placemark.coordinate
+            print(viewModel.currentLocation?.title ?? "brother")
+            if let firstItem = viewModel.currentLocation {
+                print("First item: \(firstItem)")
+                let searchCoordinate = firstItem.coordinate
                 // Use the center of the current region as the user's location
-                let userLocation = self.locationManager.region.center
-                print(userLocation)
-                print(searchCoordinate)
-                let region = self.regionThatFits(userLocation: userLocation, searchLocation: searchCoordinate)
-                print(region)
+                print(viewModel.userLocation?.coordinate ?? "Can't find")
+                let userLocationCoordinate = viewModel.userLocation?.coordinate
                 DispatchQueue.main.async {
-                    self.locationManager.region = region
+                    self.locationManager.region = MKCoordinateRegion(center: userLocationCoordinate!, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
                     // Update the annotation for the search result
                     self.locationManager.locationAnnotation.coordinate = searchCoordinate
-                    self.locationManager.locationAnnotation.title = firstItem.name ?? ""
-                }
-            }
-        }
-    }
-    // Assuming this function is part of your SwiftUI view
-    func fetchLocationDocument(documentId: String, completion: @escaping () -> Void) {
-        let db = Firestore.firestore()
-        let docRef = db.collection("locations").document(documentId.lowercased())
-
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                if let equipmentList = document.get("equipment") as? [String] {
-                    DispatchQueue.main.async {
-                        availableEquipment = equipmentList
-                        completion()
-                    }
-                } else {
-                    print("No equipment list found or it's not in the expected format.")
+                    self.locationManager.locationAnnotation.title = firstItem.title
                 }
             } else {
-                print("Document does not exist")
+                print("couldn't search")
             }
         }
     }
 
     private func regionThatFits(userLocation: CLLocationCoordinate2D, searchLocation: CLLocationCoordinate2D) -> MKCoordinateRegion {
-        print("regionThatFits run")
         // Calculate the midpoint between the user's location and the search location
+        print("user latitude: \(userLocation.latitude)")
         let midpointLatitude = (userLocation.latitude + searchLocation.latitude) / 2
         let midpointLongitude = (userLocation.longitude + searchLocation.longitude) / 2
+        
+        // Calculate the span directly from the differences in location, applying a small multiplier for slight padding
+        let latitudeDelta = abs(userLocation.latitude - searchLocation.latitude) * 1.5 // 10% padding
+        let longitudeDelta = abs(userLocation.longitude - searchLocation.longitude) * 1.5 // 10% padding
+        
+        // Create the coordinate span and region
+        let span = MKCoordinateSpan(latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta)
         let midpoint = CLLocationCoordinate2D(latitude: midpointLatitude, longitude: midpointLongitude)
-
-        // Calculate the deltas for latitude and longitude to create a span
-        // Ensure the deltas are positive and increase them slightly to ensure both points are visible
-        let latDelta = max(abs(userLocation.latitude - searchLocation.latitude), 0.01) * 2 // Ensure minimum delta to avoid too much zoom
-        let longDelta = max(abs(userLocation.longitude - searchLocation.longitude), 0.01) * 2 // Ensure minimum delta to avoid too much zoom
-
-        let span = MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: longDelta)//MKCoordinateSpan(latitudeDelta: latDelta, longitudeDelta: longDelta)
         return MKCoordinateRegion(center: midpoint, span: span)
     }
+
+
+
+
     func printContentsOfJSON() {
         guard let url = Bundle.main.url(forResource: "exercises", withExtension: "json") else {
             print("JSON file not found")
@@ -320,59 +335,6 @@ struct LocationView: View {
             print("Error reading or parsing JSON file: \(error)")
         }
     }
-    struct Exercise: Decodable {
-        let name: String
-        let force: String?
-        let level: String
-        let mechanic: String?
-        let equipment: String?
-        let primaryMuscles: [String]
-        let secondaryMuscles: [String]
-        let instructions: [String]
-        let category: String
-    }
-
-    struct ExerciseData: Decodable {
-        let exercises: [Exercise]
-    }
-    // function to give possible exercises given a list of equipment
-    func givePossibleExercises(documentId: String) {
-        viewModel.shouldGenerateExercises = false
-        print("running givePossibleExercises!")
-        guard let url = Bundle.main.url(forResource: "exercises", withExtension: "json") else {
-            print("JSON file not found")
-            return
-        }
-        
-        do {
-            let data = try Data(contentsOf: url)
-            let decoder = JSONDecoder()
-            let exercisesData = try decoder.decode(ExerciseData.self, from: data)
-            
-            fetchLocationDocument(documentId: documentId) {
-                // Process the filtered exercises
-                let possibleExercises = exercisesData.exercises.filter { exercise in
-                    guard let equipment = exercise.equipment else {
-                        return false
-                    }
-                    if (self.availableEquipment.contains(equipment) || equipment == "other") && exercise.force == self.viewModel.split.lowercased() && (exercise.primaryMuscles.contains("chest") || exercise.primaryMuscles.contains("triceps") || exercise.primaryMuscles.contains("shoulders")) {
-                        return true
-                    } else {
-                        return false
-                    }
-                }
-                
-                // Perform UI updates or modifications to `self` directly if needed, mindful of the execution context
-                DispatchQueue.main.async {
-                    self.viewModel.possibleExercises = possibleExercises
-                    self.viewModel.shouldGenerateExercises = true
-                }
-            }
-        } catch {
-            print("Error decoding JSON: \(error)")
-        }
-    }
-
 }
 
 struct MapView: UIViewRepresentable {

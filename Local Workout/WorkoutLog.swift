@@ -1,9 +1,12 @@
 import SwiftUI
 import WebKit
+import Firebase
+import FirebaseAuth
+import FirebaseFirestore
 
 struct WorkoutLog: View {
     @ObservedObject var viewModel: SharedViewModel
-    @State private var exercises: [Exercise] = []
+    @State private var exercises: [UserExercise] = []
     @State var exerciseVideoIds: [VideoID] = [VideoID(name: "Pull Up", id: "iWpoegdfgtc"), VideoID(name: "Underhand Pull Up", id: "9JC1EwqezGY"), VideoID(name: "Inverted Row", id: "KOaCM1HMwU0"), VideoID(name: "Push Up", id: "mm6_WcoCVTA"), VideoID(name: "Inverted Skull Crusher", id: "1lrjpLuXH4w")]
     @State private var showPopup = false
     @State private var newExerciseName = ""
@@ -18,6 +21,9 @@ struct WorkoutLog: View {
                     HStack {
                         HeaderView()
                         AddExerciseButton(showPopup: $showPopup)
+                    }
+                    HStack {
+                        SplitHeader(viewModel: viewModel)
                     }
                     if viewModel.shouldGenerateExercises {ExercisePicker( exercises: $exercises, viewModel: viewModel, exerciseVideoIds: exerciseVideoIds)}
                     ForEach(exercises.indices, id: \.self) { exerciseIndex in
@@ -51,18 +57,20 @@ struct WorkoutLog: View {
 
 struct HeaderView: View {
     var body: some View {
-        Text("Day 1 | Monday")
-            .font(.largeTitle)
+        let weekdayString = DateFormatter().weekdaySymbols[Calendar.current.component(.weekday, from: Date()) - 1]
+        Text("Day 1 | \(weekdayString)")
+            .font(.title)
             .bold()
             .foregroundColor(Color.white)
             .padding(.leading, -20)
             .padding(.top, 10)
+            .padding(.bottom, 0)
     }
 }
 
 struct ExerciseView: View {
     @ObservedObject var viewModel: SharedViewModel
-    @Binding var exercise: Exercise
+    @Binding var exercise: UserExercise
     let videoID: String?
     @State var videoLabelClicked: Bool
     @State var infoCircleClicked: Bool
@@ -91,6 +99,7 @@ struct ExerciseView: View {
                         .onTapGesture {
                             viewModel.currentInstructions = exercise.description
                             infoCircleClicked = infoCircleClicked ? false : true
+                            viewModel.showInstructionView = viewModel.showInstructionView ? false: true
                         }
                 }
 
@@ -208,25 +217,24 @@ struct SetView: View {
 }
 
 struct AddSetButton: View {
-    @Binding var exercise: Exercise
+    @Binding var exercise: UserExercise
 
     var body: some View {
         Button(action: {
             exercise.sets.append(Set())
         }) {
-            Text("Add Set")
-                .font(.custom("normalText", size: 15))
-                .frame(width: 120, height: 30)
-                .background(Color.black)
-                .foregroundColor(Color.white)
-                .cornerRadius(8)
+        Image(systemName: "plus.square")
+            .font(.title2)
+            .frame(width: 40, height: 40)
+            .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            .foregroundStyle(Color.blue)
         }
         .padding(.leading, 10)
     }
 }
 
 struct RemoveSetButton: View {
-    @Binding var exercise: Exercise
+    @Binding var exercise: UserExercise
 
     var body: some View {
         Button(action: {
@@ -234,13 +242,12 @@ struct RemoveSetButton: View {
                 exercise.sets.removeLast()
             }
         }) {
-            Text("Remove Set")
-                .font(.custom("normalText", size: 15))
-                .frame(width: 120, height: 30)
-                .background(Color.red)
-                .foregroundColor(Color.white)
-                .cornerRadius(8)
-        }
+            Image(systemName: "minus.square")
+                .font(.title2)
+                .frame(width: 40, height: 40)
+                .foregroundStyle(Color.red)
+                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+            }
     }
 }
 
@@ -261,7 +268,7 @@ struct AddExerciseButton: View {
 }
 
 struct RemoveExerciseButton: View {
-    @Binding var exercises: [Exercise]
+    @Binding var exercises: [UserExercise]
         var exerciseIndex: Int
 
         var body: some View {
@@ -281,7 +288,7 @@ struct RemoveExerciseButton: View {
 struct PopupView: View {
     @Binding var showPopup: Bool
     @Binding var newExerciseName: String
-    @Binding var exercises: [Exercise]
+    @Binding var exercises: [UserExercise]
     @Binding var exerciseVideoIds: [VideoID]
     @State private var selectedExerciseId: String = "iWpoegdfgtc"
 
@@ -297,7 +304,7 @@ struct PopupView: View {
                     }
                     Button("Add Exercise") {
                         if let selectedExercise = exerciseVideoIds.first(where: { $0.id == selectedExerciseId }) {
-                            exercises.append(Exercise(name: selectedExercise.name, sets: [Set()]))
+                            exercises.append(UserExercise(name: selectedExercise.name, sets: [Set()]))
                         }
                         showPopup = false
                         newExerciseName = ""
@@ -325,83 +332,229 @@ struct PopupView: View {
     }
 }
 
+struct SplitHeader: View {
+    @ObservedObject var viewModel: SharedViewModel
+    
+    var body: some View {
+        VStack {
+            Spacer() // Pushes content to center
+            Picker("Split", selection: $viewModel.split) {
+                Text("Push").tag("Push")
+                Text("Pull").tag("Pull")
+                Text("Legs").tag("Legs")
+            }
+            .padding(.leading, -30)
+            .scaleEffect(1.5)
+            Spacer() // Pushes content to center
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity) // Ensures VStack takes full available space
+    }
+}
+
 struct ExercisePicker: View {
-    @Binding var exercises: [Exercise]
+    @State public var availableEquipment: [String] = []
+    @State public var possibleExercises: [DatabaseExercise] = []
+    @State private var filteredExercises: [DatabaseExercise] = []
+    @Binding var exercises: [UserExercise]
+    @State public var idealPushWorkout: [String] = ["Barbell Incline Bench Press", "Machine Shoulder (Military) Press", "Triceps Pushdown", "Cable Rope Overhead Triceps Extension", "Bent Over Cable Flye", "Cable Lateral Raise"]
+    @State public var idealPullWorkout: [String] = ["One Arm Lat Pulldown", "Pull Up", "Bent Over Barbell Row", "Cable Shrugs", "Reverse Machine Flyes", "High Cable Curls"]
+    @State public var idealLegsWorkout: [String] = ["Barbell Squat", "Leg Extensions", "Seated Leg Curl", "Seated Calf Raise"]
     @ObservedObject var viewModel: SharedViewModel
     var exerciseVideoIds: [VideoID]
     
     var body: some View {
-        Text("Split: " + viewModel.split)
+        Text("Generating:")
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .font(.title)
             .bold()
             .foregroundStyle(Color.blue)
             .padding(.leading, -50)
             .onAppear {
-                addThreeRandomExercises()
+                makeWorkout()
             }
     }
-    private func addThreeRandomExercises() {
-        print("addThreeRandomExercises running!")
-        print("viewModel.possibleExercises: \(viewModel.possibleExercises)")
-
-        // Make a mutable copy of possibleExercises to modify it safely
-        var tempPossibleExercises = viewModel.possibleExercises
-
-        // Ensure we don't attempt to add more exercises than available in the list
-        let numberOfExercisesToAdd = min(3, tempPossibleExercises.count)
-
-        if exercises.count < 3 {
-            for _ in 1...numberOfExercisesToAdd {
-                if let randomIndex = tempPossibleExercises.indices.randomElement() {
-                    let randomExercise = tempPossibleExercises.remove(at: randomIndex)
-                    
-                    let newExercise = Exercise(name: randomExercise.name, sets: [Set()], description: randomExercise.instructions[0])
-
-                    if let matchingVideoID = exerciseVideoIds.first(where: { $0.name == randomExercise.name })?.id {
-                        print("Found matching video ID: \(matchingVideoID) for \(randomExercise.name)")
-                        // Example: newExercise.videoID = matchingVideoID
-                    } else {
-                        print("Matching video ID not found for \(randomExercise.name)")
+    struct DatabaseExercise: Decodable {
+        let name: String
+        let force: String?
+        let level: String
+        let mechanic: String?
+        let equipment: String?
+        let primaryMuscles: [String]
+        let secondaryMuscles: [String]
+        let instructions: [String]
+        let category: String
+    }
+    struct ExerciseData: Decodable {
+        let exercises: [DatabaseExercise]
+    }
+    func fetchLocationDocument(documentId: String, completion: @escaping () -> Void) {
+        let docRef = Firestore.firestore().collection("locations").document(documentId.lowercased())
+        docRef.getDocument { (document, error) in
+            if let document = document, document.exists {
+                if let equipmentList = document.get("equipment") as? [String] {
+                    DispatchQueue.main.async {
+                        availableEquipment = equipmentList
+                        completion()
                     }
-
-                    exercises.append(newExercise)
                 } else {
-                    print("No random exercise name available")
-                    break // Exit the loop if no exercises are available to prevent unnecessary iterations
+                    print("No equipment list found or it's not in the expected format.")
                 }
+            } else {
+                print("Document does not exist")
             }
         }
-
-        print("Added exercises:")
-        print(exercises)
+    }
+    public func makeWorkout() {
+        generatePossibleExercises {
+            checkForIdealExercises()
+            self.filterPossibleExercises {
+                
+            }
+        }
+    }
+    private func checkForIdealExercises() {
+        @State var idealWorkout: [String]
+        if (viewModel.split == "Push") {
+            idealWorkout = idealPushWorkout
+        }
+        if (viewModel.split == "Pull") {
+            idealWorkout = idealPullWorkout
+        }
+        if (viewModel.split == "Legs") {
+            idealWorkout = idealLegsWorkout
+        }
+        for exerciseName in idealPushWorkout {
+            if let matchingExercise = possibleExercises.first(where: { $0.name == exerciseName }) {
+                var newUserExercise = UserExercise(name: exerciseName, sets: [], description: "", videoID: "")
+                newUserExercise.description = matchingExercise.instructions.joined(separator: "\n")
+                newUserExercise.sets = [Set(weight: 0, reps: 0, isButtonPressed: false)]
+                exercises.append(newUserExercise)
+            }
+        }
+    }
+    private func generatePossibleExercises(completion: @escaping () -> Void) {
+        print("generating!")
+        viewModel.shouldGenerateExercises = false
+        // getting the JSON exercise file
+        guard let url = Bundle.main.url(forResource: "exercises", withExtension: "json") else {
+            print("JSON file not found")
+            return
+        }
+        
+        do {
+            let data = try Data(contentsOf: url)
+            let decoder = JSONDecoder()
+            let exercisesData = try decoder.decode(ExerciseData.self, from: data)
+            // once you fetch the location document, do the following code:
+            fetchLocationDocument(documentId: (viewModel.currentLocation?.title)!) {
+                self.possibleExercises = exercisesData.exercises.filter { exercise in
+                    guard let equipment = exercise.equipment else {
+                        return false
+                    }
+                    for exerciseAlreadyAdded in exercises {
+                        if (exercise.name == exerciseAlreadyAdded.name) {
+                            return false
+                        }
+                    }
+                    if (self.availableEquipment.contains(equipment) || equipment == "other" || equipment == "body only") {
+                        return true
+                    } else {
+                        return false
+                    }
+                }
+                self.viewModel.shouldGenerateExercises = false
+                completion()
+            }
+        } catch {
+            print("Error decoding JSON: \(error)")
+        }
+    }
+    private func filterPossibleExercises(completion: @escaping () -> Void) {
+        filteredExercises = possibleExercises.filter { exercise in
+            guard let equipment = exercise.equipment else {
+                return false
+            }
+            if (equipment == "body only" || equipment == "other") {
+                return false
+            }
+            if (exercise.force != viewModel.split.lowercased()) {
+                return false
+            }
+            if (exercise.level == "beginner") {
+                return false
+            }
+            else {
+                return true
+            }
+        }
+        completion()
     }
 }
 
 struct FinishWorkoutView: View {
-    @Binding var exercises: [Exercise]
+    @Binding var exercises: [UserExercise]
     var body: some View {
         HStack() {
             Spacer()
-            Button(action: {
-                LogWorkout()
-            }) {
-                Text("Finish Workout")
-                    .fontWeight(.semibold)
-                    .foregroundColor(.white) // Set the text color to white (or any color you prefer)
-                    .padding() // Add some padding inside the button for better aesthetics
+            if (!exercises.isEmpty) {
+                Button(action: {
+                    LogWorkout()
+                }) {
+                    Text("Finish Workout")
+                        .fontWeight(.semibold)
+                        .foregroundColor(.white) // Set the text color to white (or any color you prefer)
+                        .padding() // Add some padding inside the button for better aesthetics
+                }
+                .background(Color.blue) // Set the background color of the button
+                .clipShape(RoundedRectangle(cornerRadius: 10)) // Make the button corners rounded
+                .padding(.trailing, 50)
             }
-            .background(Color.blue) // Set the background color of the button
-            .clipShape(RoundedRectangle(cornerRadius: 10)) // Make the button corners rounded
-            .padding() // Add padding around the button to avoid clipping and for better spacing
-            .padding(.trailing, 50)
             Spacer()
         }
     }
     private func LogWorkout() {
-        var completedExercises: [CompletedExercise] = [
-            //CompletedExercise(name: exercises[0].name, sets: CompletedSet(weight: exercises[0].sets[0].weight, reps: exercises[0].sets[0].reps))
-        ]
+        print("Logging workout")
+        let db = Firestore.firestore()
+
+        // If there is a currentUser, let's add their exercises to their record
+        if let currentUser = Auth.auth().currentUser {
+            var workoutData: [String: Any] = [:]
+            var exercisesData: [[String: Any]] = []
+
+            // Prepare data for each exercise
+            for exercise in exercises {
+                var setsData: [[String: Any]] = []
+                for set in exercise.sets {
+                    if (set.isButtonPressed) {
+                        setsData.append([
+                            "weight": set.weight,
+                            "reps": set.reps
+                        ])
+                    }
+                }
+                exercisesData.append([
+                    "name": exercise.name,
+                    "sets": setsData
+                ])
+            }
+
+            // Prepare the workout data
+            workoutData["exercises"] = exercisesData
+            workoutData["date"] = Timestamp(date: Date())  // Capture the current date and time of the workout
+
+            // Add the workout data to the current user's workouts collection
+            let workoutRef = db.collection("users").document(currentUser.uid).collection("workouts").document()
+            workoutRef.setData(workoutData) { error in
+                if let error = error {
+                    print("Error logging workout: \(error)")
+                } else {
+                    print("Workout logged successfully with ID: \(workoutRef.documentID)")
+                }
+            }
+        } else {
+            print("No user is currently signed in.")
+        }
+        exercises = []
     }
 }
 
@@ -482,7 +635,7 @@ struct CompletedSet {
     var reps: Int = 0
 }
 
-struct Exercise {
+struct UserExercise {
     var name: String = ""
     var sets: [Set]
     var description: String = ""
