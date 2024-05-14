@@ -53,6 +53,11 @@ struct Local_WorkoutApp: App {
                     Label("Map", systemImage: "map.fill")
                 }
                 .tag(AppTab.map)
+            SignOutPage()
+                .tabItem {
+                    Label("Profile", systemImage: "person.circle")
+                }
+                .tag(AppTab.profile)
         }
     }
 
@@ -67,7 +72,7 @@ struct Local_WorkoutApp: App {
 }
 
 enum AppTab: Hashable {
-    case statistics, routines, map, instruction
+    case statistics, routines, map, profile
 }
 
 class SharedViewModel: ObservableObject {

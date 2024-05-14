@@ -8,65 +8,72 @@ struct SignInPage: View {
     @State var emailError: String = ""
     @State var passwordError: String = ""
     @State var genericError: String = ""
+    
     var body: some View {
-        VStack {
-            Text("Sign In")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.bottom, 20)
-            if !genericError.isEmpty {
-                Text(genericError)
-                    .font(.caption)
-                    .foregroundColor(.red)
-                    .padding(.bottom, 15)
-            }
-            TextField("Email", text: $email)
+        NavigationStack {
+            ZStack {
+                // Background Gradient
+                LinearGradient(gradient: Gradient(colors: [Color.purple, Color.blue]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    Text("Welcome Back!")
+                        .font(.system(size: 20, weight: .light, design: .rounded))
+                        .foregroundColor(.white)
+                        .opacity(0.7)
+                        .padding(.bottom, 5)
+                    Text("Sign In")
+                        .font(.system(size: 40, weight: .heavy, design: .rounded))
+                        .foregroundColor(.white)
+                        .padding(.bottom, 20)
+                    
+                    if !genericError.isEmpty {
+                        Text(genericError)
+                            .font(.caption)
+                            .foregroundColor(.red)
+                            .padding(.bottom, 15)
+                    }
+                    
+                    // Email Text Field
+                    CustomSignInTextField(placeholder: "Email", text: $email, isSecure: false, errorMessage: $emailError, keyboardType: .emailAddress)
+                    
+                    // Password Text Field
+                    CustomSignInTextField(placeholder: "Password", text: $password, isSecure: true, errorMessage: $passwordError)
+                    
+                    // Sign In Button
+                    Button(action: signIn) {
+                        Text("Sign In")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(width: 220, height: 60)
+                            .background(LinearGradient(gradient: Gradient(colors: [Color.red, Color.orange]), startPoint: .leading, endPoint: .trailing))
+                            .cornerRadius(15.0)
+                            .shadow(radius: 10)
+                    }
+                    .padding(.top, 20)
+                    
+                    // Sign Up Button
+                    NavigationLink(destination: SignUpPage(viewModel: viewModel)) {
+                        Text("Don't have an account? Sign Up")
+                            .foregroundColor(.white)
+                            .underline()
+                            .padding(.top, 10)
+                    }
+                }
                 .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(5.0)
-                .padding(.bottom, 5)
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-            if !emailError.isEmpty {
-                Text(emailError)
-                    .font(.caption)
-                    .foregroundColor(.red)
-                    .padding(.bottom, 15)
-            }
-            
-            SecureField("Password", text: $password)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(5.0)
-                .padding(.bottom, 5)
-            if !passwordError.isEmpty {
-                Text(passwordError)
-                    .font(.caption)
-                    .foregroundColor(.red)
-                    .padding(.bottom, 15)
-            }
-            
-            Button(action: signIn) {
-                Text("Sign In!")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(width: 220, height: 60)
-                    .background(Color.blue)
-                    .cornerRadius(15.0)
-
             }
         }
-        .padding()
     }
+    
     func signIn() {
+        if email.isEmpty {
+            emailError = "Please enter a valid email address."
+            return
+        }
         Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            if (email.isEmpty) {
-                emailError = "Please enter a valid email address."
-                return
-            }
+            self.clearErrors()
             if let error = error as NSError? {
-                self.clearErrors()
                 switch error.code {
                 case AuthErrorCode.wrongPassword.rawValue:
                     self.passwordError = "The password is incorrect"
@@ -80,16 +87,58 @@ struct SignInPage: View {
                     self.genericError = "An unexpected error occurred. Please try again. Error: \(error.localizedDescription)"
                 }
                 return
-            }
-            else {
+            } else {
                 viewModel.isUserAuthenticated = true
-                self.clearErrors()
             }
         }
     }
+    
     func clearErrors() {
         self.emailError = ""
         self.passwordError = ""
         self.genericError = ""
+    }
+}
+
+struct CustomSignInTextField: View {
+    var placeholder: String
+    @Binding var text: String
+    var isSecure: Bool
+    @Binding var errorMessage: String
+    var keyboardType: UIKeyboardType = .default
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            if isSecure {
+                SecureField(placeholder, text: $text)
+                    .padding()
+                    .background(Color.white.opacity(0.9))
+                    .cornerRadius(10.0)
+                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 10)
+                    .autocapitalization(.none)
+                    .keyboardType(keyboardType)
+            } else {
+                TextField(placeholder, text: $text)
+                    .padding()
+                    .background(Color.white.opacity(0.9))
+                    .cornerRadius(10.0)
+                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 10)
+                    .autocapitalization(.none)
+                    .keyboardType(keyboardType)
+            }
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.red)
+                    .padding(.top, 5)
+            }
+        }
+        .padding(.bottom, 15)
+    }
+}
+
+struct SignInPage_Previews: PreviewProvider {
+    static var previews: some View {
+        SignInPage(viewModel: SharedViewModel())
     }
 }

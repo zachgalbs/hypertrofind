@@ -18,78 +18,57 @@ struct SignUpPage: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-                Text("Sign Up")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .padding(.bottom, 20)
+            ZStack {
+                // Background Gradient
+                LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .topLeading, endPoint: .bottomTrailing)
+                    .edgesIgnoringSafeArea(.all)
                 
-                TextField("Username", text: $username)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(5.0)
-                    .padding(.bottom, 5)
-                    .autocapitalization(.none)
-                    .autocorrectionDisabled()
-                if !usernameError.isEmpty {
-                    Text(usernameError)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .padding(.bottom, 15)
-                }
-                
-                TextField("Email", text: $email)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(5.0)
-                    .padding(.bottom, 5)
-                    .keyboardType(.emailAddress)
-                    .autocapitalization(.none)
-                if !emailError.isEmpty {
-                    Text(emailError)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .padding(.bottom, 15)
-                }
-                
-                SecureField("Password", text: $password)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(5.0)
-                    .padding(.bottom, 5)
-                if !passwordError.isEmpty {
-                    Text(passwordError)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .padding(.bottom, 15)
-                }
-                
-                SecureField("Confirm Password", text: $confirmPassword)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(5.0)
-                    .padding(.bottom, 5)
-                if !confirmPasswordError.isEmpty {
-                    Text(confirmPasswordError)
-                        .font(.caption)
-                        .foregroundColor(.red)
-                        .padding(.bottom, 15)
-                }
-                NavigationLink(destination: SignInPage(viewModel: viewModel)) {
-                    Text("Sign In")
-                        .foregroundStyle(Color.blue)
-                }
-                Button(action: signUpButtonTapped) {
+                VStack {
+                    // Title
                     Text("Sign Up")
-                        .font(.headline)
+                        .font(.system(size: 40, weight: .heavy, design: .rounded))
                         .foregroundColor(.white)
-                        .padding()
-                        .frame(width: 220, height: 60)
-                        .background(Color.blue)
-                        .cornerRadius(15.0)
+                        .padding(.bottom, 20)
+                    
+                    // Text Fields
+                    Group {
+                        CustomSignUpTextField(placeholder: "Username", text: $username, isSecure: false, errorMessage: $usernameError)
+                        CustomSignUpTextField(placeholder: "Email", text: $email, isSecure: false, errorMessage: $emailError, keyboardType: .emailAddress)
+                        CustomSignUpTextField(placeholder: "Password", text: $password, isSecure: true, errorMessage: $passwordError)
+                        CustomSignUpTextField(placeholder: "Confirm Password", text: $confirmPassword, isSecure: true, errorMessage: $confirmPasswordError)
+                    }
+                    
+                    // Sign Up Button
+                    Button(action: signUpButtonTapped) {
+                        Text("Sign Up")
+                            .font(.headline)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(width: 220, height: 60)
+                            .background(LinearGradient(gradient: Gradient(colors: [Color.fieryOrange, Color.brightYellow]), startPoint: .leading, endPoint: .trailing))
+                            .cornerRadius(15.0)
+                            .shadow(radius: 10)
+                    }
+                    .padding(.top, 20)
+                    
+                    // Sign In Link
+                    NavigationLink(destination: SignInPage(viewModel: viewModel)) {
+                        Text("Already have an account? Sign In")
+                            .foregroundColor(.white)
+                            .underline()
+                            .padding(.top, 10)
+                    }
+                    
+                    // Generic Error Message
+                    if !genericError.isEmpty {
+                        Text(genericError)
+                            .font(.caption)
+                            .foregroundColor(.softRed)
+                            .padding(.top, 10)
+                    }
                 }
+                .padding()
             }
-            .padding()
         }
     }
     
@@ -98,19 +77,23 @@ struct SignUpPage: View {
             if let error = error as NSError? {
                 self.clearErrors()
                 
-                if (username.isEmpty) {
+                if username.isEmpty {
                     usernameError = "You can't have an empty username"
                     return
                 }
-                else if (email.isEmpty) {
+                if email.isEmpty {
                     emailError = "You can't have an empty email"
                     return
                 }
-                else if (password.isEmpty) {
+                if password.isEmpty {
                     passwordError = "You can't have an empty password"
                     return
                 }
-                // Check if the error is due to the email already being in use
+                if password != confirmPassword {
+                    confirmPasswordError = "Passwords do not match"
+                    return
+                }
+
                 switch error.code {
                 case AuthErrorCode.emailAlreadyInUse.rawValue:
                     self.emailError = "This email is already in use. Please use a different email."
@@ -127,14 +110,10 @@ struct SignUpPage: View {
                 default:
                     self.genericError = "An unexpected error occurred. Please try again. Error: \(error.localizedDescription)"
                 }
-                // Return or handle the error (e.g., update UI)
                 return
-            }
-            // if we can create a user,
-            else {
+            } else {
                 self.clearErrors()
                 let db = Firestore.firestore()
-                // if we can get the currentUser
                 if let user = Auth.auth().currentUser {
                     db.collection("users").document(user.uid).setData(["username": username]) { error in
                         if let error = error {
@@ -146,20 +125,16 @@ struct SignUpPage: View {
                 } else {
                     print("can't get the current user")
                 }
-                viewModel.isUserAuthenticated = true // This will trigger the navigation
+                viewModel.isUserAuthenticated = true
             }
             
             guard let _ = authResult else {
                 self.genericError = "An unexpected error occurred. Please try again."
                 return
             }
-            
-            // If the creation was successful, you can proceed to add the user's information to Firestore
-            // or navigate to another part of your app
         }
     }
 
-    // Utility function to clear previous errors before attempting to sign up again
     func clearErrors() {
         self.usernameError = ""
         self.emailError = ""
@@ -169,9 +144,59 @@ struct SignUpPage: View {
     }
 }
 
+// Custom TextField for better styling and reusability
+struct CustomSignUpTextField: View {
+    var placeholder: String
+    @Binding var text: String
+    var isSecure: Bool
+    @Binding var errorMessage: String
+    var keyboardType: UIKeyboardType = .default
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            if isSecure {
+                SecureField(placeholder, text: $text)
+                    .padding()
+                    .background(Color.white.opacity(0.9))
+                    .cornerRadius(10.0)
+                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 10)
+                    .autocapitalization(.none)
+                    .keyboardType(keyboardType)
+            } else {
+                TextField(placeholder, text: $text)
+                    .padding()
+                    .background(Color.white.opacity(0.9))
+                    .cornerRadius(10.0)
+                    .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: 10)
+                    .autocapitalization(.none)
+                    .keyboardType(keyboardType)
+            }
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
+                    .font(.caption)
+                    .foregroundColor(.softRed)
+                    .padding(.top, 5)
+            }
+        }
+        .padding(.bottom, 15)
+    }
+}
+
 struct SignUpPage_Previews: PreviewProvider {
     static var previews: some View {
         SignUpPage(viewModel: SharedViewModel())
     }
 }
 
+// Custom Colors Extension
+extension Color {
+    static let electricBlue = Color(red: 0.0, green: 123.0/255.0, blue: 1.0)
+    static let vibrantGreen = Color(red: 40.0/255.0, green: 167.0/255.0, blue: 69.0/255.0)
+    static let fieryOrange = Color(red: 1.0, green: 87.0/255.0, blue: 51.0/255.0)
+    static let brightYellow = Color(red: 1.0, green: 193.0/255.0, blue: 7.0/255.0)
+    static let lightGray = Color(red: 248.0/255.0, green: 249.0/255.0, blue: 250.0/255.0)
+    static let darkGray = Color(red: 52.0/255.0, green: 58.0/255.0, blue: 64.0/255.0)
+    static let coolGray = Color(red: 108.0/255.0, green: 117.0/255.0, blue: 125.0/255.0)
+    static let turquoise = Color(red: 23.0/255.0, green: 162.0/255.0, blue: 184.0/255.0)
+    static let softRed = Color(red: 220.0/255.0, green: 53.0/255.0, blue: 69.0/255.0)
+}
