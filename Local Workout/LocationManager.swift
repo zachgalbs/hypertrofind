@@ -167,7 +167,7 @@ struct LocationView: View {
                                 Section(header:  Text("Recommended Locations:")
                                 .textCase(.none)
                                 .bold()
-                                .foregroundStyle(Color.white)
+                                .foregroundStyle(Color.black)
                                 .font(.title3))
                                 {
                                     ForEach(locationManager.locationAnnotations, id: \.self) { annotation in
@@ -378,5 +378,13 @@ extension DragState {
         case .dragging:
             return true
         }
+    }
+}
+
+struct LocationView_Previews: PreviewProvider {
+    static var previews: some View {
+        // Provide sample data for the preview
+        let sampleViewModel = SharedViewModel()
+        LocationView(viewModel: sampleViewModel)
     }
 }

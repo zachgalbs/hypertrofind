@@ -56,15 +56,53 @@ struct WorkoutLog: View {
 }
 
 struct HeaderView: View {
+    @State private var weekdayButtons: [WeekdayButton] = [
+        WeekdayButton(day: "Monday", symbol: "m"),
+        WeekdayButton(day: "Tuesday", symbol: "t"),
+        WeekdayButton(day: "Wednesday", symbol: "w"),
+        WeekdayButton(day: "Thursday", symbol: "t"),
+        WeekdayButton(day: "Friday", symbol: "f"),
+        WeekdayButton(day: "Saturday", symbol: "s"),
+        WeekdayButton(day: "Sunday", symbol: "s")
+    ]
+    @State private var selectedDay: String = ""
+    
     var body: some View {
-        let weekdayString = DateFormatter().weekdaySymbols[Calendar.current.component(.weekday, from: Date()) - 1]
-        Text("Day 1 | \(weekdayString)")
-            .font(.title)
-            .bold()
-            .foregroundColor(Color.white)
-            .padding(.leading, -20)
-            .padding(.top, 10)
-            .padding(.bottom, 0)
+        HStack {
+            ForEach(weekdayButtons.indices, id: \.self) { index in
+                Button(action: {
+                    selectDay(at: index)
+                }) {
+                    Image(systemName: "\(weekdayButtons[index].symbol).circle\(weekdayButtons[index].isButtonPressed ? ".fill" : "")")
+                        .font(.title2)
+                        .foregroundStyle(Color.white)
+                }
+            }
+        }
+        .padding(.top, 18)
+    }
+    
+    private func selectDay(at index: Int) {
+        for i in weekdayButtons.indices {
+            weekdayButtons[i].isButtonPressed = (i == index)
+        }
+        selectedDay = weekdayButtons[index].day
+    }
+}
+
+struct AddExerciseButton: View {
+    @Binding var showPopup: Bool
+
+    var body: some View {
+        Button(action: {showPopup = true}) {
+            Image(systemName: "plus.circle")
+                .font(.title2)
+                .frame(width: 40, height: 40)
+                .foregroundStyle(Color.white)
+                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
+        }
+        .padding(.top, 18)
+        .padding(.leading, 50)
     }
 }
 
@@ -251,22 +289,6 @@ struct RemoveSetButton: View {
     }
 }
 
-struct AddExerciseButton: View {
-    @Binding var showPopup: Bool
-
-    var body: some View {
-        Button(action: {showPopup = true}) {
-            Image(systemName: "plus.circle")
-                .font(.title2)
-                .frame(width: 40, height: 40)
-                .foregroundStyle(Color.white)
-                .clipShape(/*@START_MENU_TOKEN@*/Circle()/*@END_MENU_TOKEN@*/)
-        }
-        .padding(.top, 18)
-        .padding(.leading, 50)
-    }
-}
-
 struct RemoveExerciseButton: View {
     @Binding var exercises: [UserExercise]
         var exerciseIndex: Int
@@ -338,13 +360,22 @@ struct SplitHeader: View {
     var body: some View {
         VStack {
             Spacer() // Pushes content to center
-            Picker("Split", selection: $viewModel.split) {
-                Text("Push").tag("Push")
-                Text("Pull").tag("Pull")
-                Text("Legs").tag("Legs")
+            if (viewModel.split == "Push Pull Legs") {
+                Picker("Muscle Group", selection: $viewModel.muscleGroup) {
+                    Text("Push").tag("Push")
+                    Text("Pull").tag("Pull")
+                    Text("Legs").tag("Legs")
+                }
+                .padding(.leading, -30)
+                .scaleEffect(1.5)
+            } else if (viewModel.split == "Upper Lower") {
+                Picker("Muscle Group", selection: $viewModel.muscleGroup) {
+                    Text("Upper").tag("Upper")
+                    Text("Lower").tag("Lower")
+                }
+                .padding(.leading, -30)
+                .scaleEffect(1.5)
             }
-            .padding(.leading, -30)
-            .scaleEffect(1.5)
             Spacer() // Pushes content to center
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity) // Ensures VStack takes full available space
@@ -414,13 +445,13 @@ struct ExercisePicker: View {
     }
     private func checkForIdealExercises() {
         @State var idealWorkout: [String]
-        if (viewModel.split == "Push") {
+        if (viewModel.muscleGroup == "Push") {
             idealWorkout = idealPushWorkout
         }
-        if (viewModel.split == "Pull") {
+        if (viewModel.muscleGroup == "Pull") {
             idealWorkout = idealPullWorkout
         }
-        if (viewModel.split == "Legs") {
+    if (viewModel.muscleGroup == "Legs") {
             idealWorkout = idealLegsWorkout
         }
         for exerciseName in idealPushWorkout {
@@ -477,7 +508,7 @@ struct ExercisePicker: View {
             if (equipment == "body only" || equipment == "other") {
                 return false
             }
-            if (exercise.force != viewModel.split.lowercased()) {
+            if (exercise.force != viewModel.muscleGroup.lowercased()) {
                 return false
             }
             if (exercise.level == "beginner") {
@@ -623,6 +654,11 @@ struct InstructionView: View {
             Spacer()
         }
     }
+}
+struct WeekdayButton {
+    let day: String
+    let symbol: String
+    var isButtonPressed: Bool = false
 }
 
 struct Set {

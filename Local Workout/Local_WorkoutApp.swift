@@ -53,7 +53,7 @@ struct Local_WorkoutApp: App {
                     Label("Map", systemImage: "map.fill")
                 }
                 .tag(AppTab.map)
-            SignOutPage()
+            ProfilePage(viewModel: sharedViewModel)
                 .tabItem {
                     Label("Profile", systemImage: "person.circle")
                 }
@@ -88,7 +88,9 @@ class SharedViewModel: ObservableObject {
         }
     }
     @Published var showInstructionView: Bool = false
-    @Published var split: String = "Push"
+    @Published var muscleGroup: String = "Push"
+    @Published var split: String = "Push Pull Legs"
+    @Published var day: String = "Monday"
     @Published var currentInstructions: String?
     @Published var isUserAuthenticated: Bool = false
     @Published var username: String = "null"

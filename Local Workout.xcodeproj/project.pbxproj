@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		68267ADD2BF30BFA0098E5BC /* SignOutPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68267ADC2BF30BFA0098E5BC /* SignOutPage.swift */; };
+		68267ADD2BF30BFA0098E5BC /* ProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68267ADC2BF30BFA0098E5BC /* ProfilePage.swift */; };
 		68487B0D2BB1CCA50071C70A /* SignInPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68487B0C2BB1CCA50071C70A /* SignInPage.swift */; };
 		6857A9602B8EDD1E00688271 /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = 6857A95F2B8EDD1E00688271 /* exercises.json */; };
 		685C81592BA957B300C4B4FC /* SignUpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685C81582BA957B300C4B4FC /* SignUpPage.swift */; };
@@ -68,7 +68,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		68267ADC2BF30BFA0098E5BC /* SignOutPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignOutPage.swift; sourceTree = "<group>"; };
+		68267ADC2BF30BFA0098E5BC /* ProfilePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePage.swift; sourceTree = "<group>"; };
 		68487B0C2BB1CCA50071C70A /* SignInPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInPage.swift; sourceTree = "<group>"; };
 		6857A95F2B8EDD1E00688271 /* exercises.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = exercises.json; sourceTree = "<group>"; };
 		685C81582BA957B300C4B4FC /* SignUpPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpPage.swift; sourceTree = "<group>"; };
@@ -166,7 +166,7 @@
 				68A78F092B9D595800D48A35 /* Local-Workout-Info.plist */,
 				B6281D462B0338B7000BC38E /* Local_WorkoutApp.swift */,
 				68487B0C2BB1CCA50071C70A /* SignInPage.swift */,
-				68267ADC2BF30BFA0098E5BC /* SignOutPage.swift */,
+				68267ADC2BF30BFA0098E5BC /* ProfilePage.swift */,
 				685C81582BA957B300C4B4FC /* SignUpPage.swift */,
 				B6F631602B17B2570040ED95 /* WorkoutLog.swift */,
 				B665A8902B2AD83D00ED53B2 /* LocationManager.swift */,
@@ -374,7 +374,7 @@
 				B6281D492B0338B7000BC38E /* Home.swift in Sources */,
 				B6281D472B0338B7000BC38E /* Local_WorkoutApp.swift in Sources */,
 				685C81592BA957B300C4B4FC /* SignUpPage.swift in Sources */,
-				68267ADD2BF30BFA0098E5BC /* SignOutPage.swift in Sources */,
+				68267ADD2BF30BFA0098E5BC /* ProfilePage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +535,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Local Workout/Preview Content\"";
@@ -555,6 +556,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Zachary.Local-Workout";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -566,6 +568,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Local Workout/Preview Content\"";
@@ -586,6 +589,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "Zachary.Local-Workout";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

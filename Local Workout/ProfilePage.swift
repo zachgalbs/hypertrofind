@@ -1,44 +1,43 @@
 import SwiftUI
 import FirebaseAuth
 
-struct SignOutPage: View {
+struct ProfilePage: View {
+    @ObservedObject var viewModel: SharedViewModel
     @State private var showAlert = false
     @State private var alertMessage = ""
     
     var body: some View {
         ZStack {
             // Background Gradient
-            LinearGradient(gradient: Gradient(colors: [Color.blue, Color.purple]), startPoint: .topLeading, endPoint: .bottomTrailing)
+            LinearGradient(gradient: Gradient(colors: [Color.darkGray, Color.coolGray]), startPoint: .topLeading, endPoint: .bottomTrailing)
                 .edgesIgnoringSafeArea(.all)
             
             // Content
             VStack {
-                // Title
-                Text("Sign Out")
-                    .font(.system(size: 40, weight: .heavy, design: .rounded))
-                    .foregroundColor(.white)
-                    .padding(.bottom, 20)
-                
-                // Subtitle
-                Text("We hope to see you again soon!")
-                    .font(.system(size: 20, weight: .medium, design: .rounded))
-                    .foregroundColor(.white.opacity(0.8))
-                    .padding(.bottom, 40)
-                
+                // Changing Split
+                Text("Split:")
+                    .font(.system(size: 24, weight: .bold, design: .rounded))
+                    .foregroundStyle(Color.white)
+                    .padding(.bottom, 0)
+                Picker("Split", selection: $viewModel.split) {
+                    Text("Push Pull Legs").tag("Push Pull Legs")
+                    Text("Upper Lower").tag("Upper Lower")
+                }
                 // Sign Out Button
                 Button(action: {
                     signOut()
                 }) {
                     Text("Sign Out")
-                        .font(.system(size: 24, weight: .bold, design: .rounded))
+                        .font(.system(size: 12, weight: .bold, design: .rounded))
                         .padding()
-                        .frame(maxWidth: .infinity)
+                        .frame(maxWidth: 200)
                         .background(LinearGradient(gradient: Gradient(colors: [Color.red, Color.orange]), startPoint: .leading, endPoint: .trailing))
                         .foregroundColor(.white)
                         .cornerRadius(15)
                         .shadow(radius: 10)
                 }
-                .padding(.horizontal, 40)
+                .padding(.horizontal, 20)
+                
             }
             .padding()
         }
@@ -61,6 +60,6 @@ struct SignOutPage: View {
 
 struct SignOutPage_Previews: PreviewProvider {
     static var previews: some View {
-        SignOutPage()
+        ProfilePage(viewModel: SharedViewModel())
     }
 }
