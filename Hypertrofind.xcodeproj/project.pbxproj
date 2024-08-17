@@ -1,0 +1,635 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 70;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		688FE4CC2C197B03005F7327 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 688FE4CB2C197B03005F7327 /* Assets.xcassets */; };
+		688FE4CF2C197B03005F7327 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 688FE4CE2C197B03005F7327 /* Preview Assets.xcassets */; };
+		688FE4D92C197B03005F7327 /* HypertrofindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FE4D82C197B03005F7327 /* HypertrofindTests.swift */; };
+		688FE4E32C197B03005F7327 /* HypertrofindUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FE4E22C197B03005F7327 /* HypertrofindUITests.swift */; };
+		688FE4E52C197B03005F7327 /* HypertrofindUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FE4E42C197B03005F7327 /* HypertrofindUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		688FE4D52C197B03005F7327 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 688FE4BA2C197B01005F7327 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 688FE4C12C197B01005F7327;
+			remoteInfo = Hypertrofind;
+		};
+		688FE4DF2C197B03005F7327 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 688FE4BA2C197B01005F7327 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 688FE4C12C197B01005F7327;
+			remoteInfo = Hypertrofind;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		688FE4C22C197B01005F7327 /* Hypertrofind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hypertrofind.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		688FE4CB2C197B03005F7327 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		688FE4CE2C197B03005F7327 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		688FE4D42C197B03005F7327 /* HypertrofindTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HypertrofindTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		688FE4D82C197B03005F7327 /* HypertrofindTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HypertrofindTests.swift; sourceTree = "<group>"; };
+		688FE4DE2C197B03005F7327 /* HypertrofindUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HypertrofindUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		688FE4E22C197B03005F7327 /* HypertrofindUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HypertrofindUITests.swift; sourceTree = "<group>"; };
+		688FE4E42C197B03005F7327 /* HypertrofindUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HypertrofindUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		689310622C6E99BF0055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ActiveWorkoutPageView.swift,
+				ChartView.swift,
+				ContentView.swift,
+				LocationView.swift,
+				ProfileView.swift,
+				RoutineBuilderView.swift,
+				RoutineOptionsView.swift,
+				RoutineView.swift,
+				SetOptionsView.swift,
+				SignUpView.swift,
+			);
+			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
+		};
+		689310642C6E99DA0055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				completedRoutines.json,
+				exercises.json,
+				routines.json,
+			);
+			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
+		};
+		689310662C6E9A140055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ChartData.swift,
+				HypertrofindApp.swift,
+				Item.swift,
+				RoutineStructs.swift,
+				SaveLoadJson.swift,
+			);
+			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		689310612C6E99B20055B006 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (689310622C6E99BF0055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
+		689310632C6E99D60055B006 /* Json */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (689310642C6E99DA0055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Json; sourceTree = "<group>"; };
+		689310652C6E99F60055B006 /* Swift */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (689310662C6E9A140055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Swift; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		688FE4BF2C197B01005F7327 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		688FE4D12C197B03005F7327 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		688FE4DB2C197B03005F7327 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		688FE4B92C197B01005F7327 = {
+			isa = PBXGroup;
+			children = (
+				688FE4C42C197B01005F7327 /* Hypertrofind */,
+				688FE4D72C197B03005F7327 /* HypertrofindTests */,
+				688FE4E12C197B03005F7327 /* HypertrofindUITests */,
+				688FE4C32C197B01005F7327 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		688FE4C32C197B01005F7327 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				688FE4C22C197B01005F7327 /* Hypertrofind.app */,
+				688FE4D42C197B03005F7327 /* HypertrofindTests.xctest */,
+				688FE4DE2C197B03005F7327 /* HypertrofindUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		688FE4C42C197B01005F7327 /* Hypertrofind */ = {
+			isa = PBXGroup;
+			children = (
+				689310612C6E99B20055B006 /* Views */,
+				689310652C6E99F60055B006 /* Swift */,
+				688FE4CB2C197B03005F7327 /* Assets.xcassets */,
+				689310632C6E99D60055B006 /* Json */,
+				688FE4CD2C197B03005F7327 /* Preview Content */,
+			);
+			path = Hypertrofind;
+			sourceTree = "<group>";
+		};
+		688FE4CD2C197B03005F7327 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				688FE4CE2C197B03005F7327 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		688FE4D72C197B03005F7327 /* HypertrofindTests */ = {
+			isa = PBXGroup;
+			children = (
+				688FE4D82C197B03005F7327 /* HypertrofindTests.swift */,
+			);
+			path = HypertrofindTests;
+			sourceTree = "<group>";
+		};
+		688FE4E12C197B03005F7327 /* HypertrofindUITests */ = {
+			isa = PBXGroup;
+			children = (
+				688FE4E22C197B03005F7327 /* HypertrofindUITests.swift */,
+				688FE4E42C197B03005F7327 /* HypertrofindUITestsLaunchTests.swift */,
+			);
+			path = HypertrofindUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		688FE4C12C197B01005F7327 /* Hypertrofind */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 688FE4E82C197B03005F7327 /* Build configuration list for PBXNativeTarget "Hypertrofind" */;
+			buildPhases = (
+				688FE4BE2C197B01005F7327 /* Sources */,
+				688FE4BF2C197B01005F7327 /* Frameworks */,
+				688FE4C02C197B01005F7327 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hypertrofind;
+			packageProductDependencies = (
+			);
+			productName = Hypertrofind;
+			productReference = 688FE4C22C197B01005F7327 /* Hypertrofind.app */;
+			productType = "com.apple.product-type.application";
+		};
+		688FE4D32C197B03005F7327 /* HypertrofindTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 688FE4EB2C197B03005F7327 /* Build configuration list for PBXNativeTarget "HypertrofindTests" */;
+			buildPhases = (
+				688FE4D02C197B03005F7327 /* Sources */,
+				688FE4D12C197B03005F7327 /* Frameworks */,
+				688FE4D22C197B03005F7327 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				688FE4D62C197B03005F7327 /* PBXTargetDependency */,
+			);
+			name = HypertrofindTests;
+			productName = HypertrofindTests;
+			productReference = 688FE4D42C197B03005F7327 /* HypertrofindTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		688FE4DD2C197B03005F7327 /* HypertrofindUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 688FE4EE2C197B03005F7327 /* Build configuration list for PBXNativeTarget "HypertrofindUITests" */;
+			buildPhases = (
+				688FE4DA2C197B03005F7327 /* Sources */,
+				688FE4DB2C197B03005F7327 /* Frameworks */,
+				688FE4DC2C197B03005F7327 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				688FE4E02C197B03005F7327 /* PBXTargetDependency */,
+			);
+			name = HypertrofindUITests;
+			productName = HypertrofindUITests;
+			productReference = 688FE4DE2C197B03005F7327 /* HypertrofindUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		688FE4BA2C197B01005F7327 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					688FE4C12C197B01005F7327 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					688FE4D32C197B03005F7327 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 688FE4C12C197B01005F7327;
+					};
+					688FE4DD2C197B03005F7327 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 688FE4C12C197B01005F7327;
+					};
+				};
+			};
+			buildConfigurationList = 688FE4BD2C197B01005F7327 /* Build configuration list for PBXProject "Hypertrofind" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 688FE4B92C197B01005F7327;
+			packageReferences = (
+			);
+			productRefGroup = 688FE4C32C197B01005F7327 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				688FE4C12C197B01005F7327 /* Hypertrofind */,
+				688FE4D32C197B03005F7327 /* HypertrofindTests */,
+				688FE4DD2C197B03005F7327 /* HypertrofindUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		688FE4C02C197B01005F7327 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				688FE4CF2C197B03005F7327 /* Preview Assets.xcassets in Resources */,
+				688FE4CC2C197B03005F7327 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		688FE4D22C197B03005F7327 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		688FE4DC2C197B03005F7327 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		688FE4BE2C197B01005F7327 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		688FE4D02C197B03005F7327 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				688FE4D92C197B03005F7327 /* HypertrofindTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		688FE4DA2C197B03005F7327 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				688FE4E52C197B03005F7327 /* HypertrofindUITestsLaunchTests.swift in Sources */,
+				688FE4E32C197B03005F7327 /* HypertrofindUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		688FE4D62C197B03005F7327 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
+			targetProxy = 688FE4D52C197B03005F7327 /* PBXContainerItemProxy */;
+		};
+		688FE4E02C197B03005F7327 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
+			targetProxy = 688FE4DF2C197B03005F7327 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		688FE4E62C197B03005F7327 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		688FE4E72C197B03005F7327 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		688FE4E92C197B03005F7327 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Hypertrofind/Hypertrofind.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Hypertrofind/Preview Content\"";
+				DEVELOPMENT_TEAM = 696FHURJPB;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = zach.Hypertrofind;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		688FE4EA2C197B03005F7327 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Hypertrofind/Hypertrofind.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Hypertrofind/Preview Content\"";
+				DEVELOPMENT_TEAM = 696FHURJPB;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = zach.Hypertrofind;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		688FE4EC2C197B03005F7327 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 696FHURJPB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = zach.HypertrofindTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hypertrofind.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hypertrofind";
+			};
+			name = Debug;
+		};
+		688FE4ED2C197B03005F7327 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 696FHURJPB;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = zach.HypertrofindTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hypertrofind.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hypertrofind";
+			};
+			name = Release;
+		};
+		688FE4EF2C197B03005F7327 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 696FHURJPB;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = zach.HypertrofindUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Hypertrofind;
+			};
+			name = Debug;
+		};
+		688FE4F02C197B03005F7327 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 696FHURJPB;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = zach.HypertrofindUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Hypertrofind;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		688FE4BD2C197B01005F7327 /* Build configuration list for PBXProject "Hypertrofind" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				688FE4E62C197B03005F7327 /* Debug */,
+				688FE4E72C197B03005F7327 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		688FE4E82C197B03005F7327 /* Build configuration list for PBXNativeTarget "Hypertrofind" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				688FE4E92C197B03005F7327 /* Debug */,
+				688FE4EA2C197B03005F7327 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		688FE4EB2C197B03005F7327 /* Build configuration list for PBXNativeTarget "HypertrofindTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				688FE4EC2C197B03005F7327 /* Debug */,
+				688FE4ED2C197B03005F7327 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		688FE4EE2C197B03005F7327 /* Build configuration list for PBXNativeTarget "HypertrofindUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				688FE4EF2C197B03005F7327 /* Debug */,
+				688FE4F02C197B03005F7327 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 688FE4BA2C197B01005F7327 /* Project object */;
+}

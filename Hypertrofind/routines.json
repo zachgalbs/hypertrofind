@@ -1,0 +1,13 @@
+[
+  {
+    "name" : "Push",
+    "exercises" : [
+      {
+        "sets" : 2,
+        "weight" : 50,
+        "reps" : 10,
+        "name" : "Bench"
+      }
+    ]
+  }
+]

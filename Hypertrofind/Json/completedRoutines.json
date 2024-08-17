@@ -1,0 +1,94 @@
+[
+  {
+    "date" : 745530181.395197,
+    "routine" : {
+      "exercises" : [
+        {
+          "reps" : 10,
+          "sets" : 3,
+          "name" : "Bench Press",
+          "weight" : 50
+        }
+      ],
+      "name" : "Push"
+    },
+    "day" : "Fri",
+    "weight" : 50
+  },
+  {
+    "date" : 745530187.927175,
+    "weight" : 50,
+    "routine" : {
+      "exercises" : [
+        {
+          "weight" : 50,
+          "sets" : 3,
+          "name" : "Bench Press",
+          "reps" : 10
+        }
+      ],
+      "name" : "Push"
+    },
+    "day" : "Tue"
+  },
+  {
+    "day" : "Wed",
+    "date" : 745532364.652975,
+    "routine" : {
+      "name" : "Push",
+      "exercises" : [
+        {
+          "name" : "Bench Press",
+          "reps" : 10,
+          "sets" : 3,
+          "weight" : 100
+        }
+      ]
+    },
+    "weight" : 100
+  },
+  {
+    "date" : 745532429.915532,
+    "routine" : {
+      "name" : "Push",
+      "exercises" : [
+        {
+          "sets" : 3,
+          "reps" : 10,
+          "weight" : 100,
+          "name" : "Bench Press"
+        }
+      ]
+    },
+    "weight" : 100,
+    "day" : "Thu"
+  },
+  {
+    "weight" : 150,
+    "routine" : {
+      "exercises" : [
+        {
+          "reps" : 10,
+          "weight" : 50,
+          "sets" : 3,
+          "name" : "Squats"
+        },
+        {
+          "name" : "Leg Extensions",
+          "reps" : 10,
+          "weight" : 50,
+          "sets" : 2
+        },
+        {
+          "name" : "Leg Curls",
+          "sets" : 2,
+          "reps" : 10,
+          "weight" : 50
+        }
+      ],
+      "name" : "Legs "
+    },
+    "date" : 745546053.392998,
+    "day" : "Fri"
+  }
+]
