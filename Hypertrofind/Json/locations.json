@@ -1,0 +1,47 @@
+[
+  {
+    "equipment" : [
+      "Barbell",
+      "Bench",
+      "Dumbbell"
+    ],
+    "name" : "Garage"
+  },
+  {
+    "name" : "Other garage",
+    "equipment" : [
+      "Squat rack",
+      "Bench",
+      "Cable"
+    ]
+  },
+  {
+    "name" : "Example",
+    "equipment" : [
+      "dumbbell"
+    ]
+  },
+  {
+    "name" : "Other example",
+    "equipment" : [
+      "Dumbbell"
+    ]
+  },
+  {
+    "name" : "UC",
+    "equipment" : [
+      "dumbbell"
+    ]
+  },
+  {
+    "name" : "Untitled",
+    "equipment" : [
+      "body only",
+      "kettlebells",
+      "other",
+      "barbell",
+      "smith machine",
+      "dumbbell"
+    ]
+  }
+]

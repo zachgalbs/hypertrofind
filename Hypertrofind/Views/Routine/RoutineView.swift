@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct RoutineView: View {
+    @State var fromLocationView: Bool = false
+    @State var location: Location?
     var body: some View {
         NavigationStack {
             ZStack {
@@ -13,23 +15,25 @@ struct RoutineView: View {
                         AddRoutineButton()
                     }
                     // For the Routine Buttons
-                    RoutineButtonsView()
+                    RoutineButtonsView(fromLocationView: fromLocationView, location: location)
                     Spacer()
                 }
                 Spacer()
             }
         }
-        }
+    }
 }
 
 struct RoutineButtonsView: View {
+    @State var fromLocationView: Bool
+    @State var location: Location?
     var body: some View {
         VStack {
             if let loadedRoutines: [Routine] = loadJson(from: "routines.json") {
                 if (!loadedRoutines.isEmpty) {
                     HStack {
                         ForEach(loadedRoutines, id: \.name) { routine in
-                            RoutineButtonView(routine: routine)
+                            RoutineButtonView(routine: routine, generateCustomRoutine: fromLocationView, location: location)
                         }
                     }
                 }
@@ -48,11 +52,19 @@ struct RoutineButtonsView: View {
 struct RoutineButtonView: View {
     @State var routine: Routine
     @State private var isEllipsisPressed = false
+    @State var generateCustomRoutine: Bool
+    @State var location: Location?
     
     var body: some View {
         GeometryReader { geometry in
             HStack(spacing: 16) { // Adjust spacing as needed
-                NavigationLink(destination: ActiveWorkoutPageView(routine: routine)) {
+                NavigationLink(destination: {
+                    if generateCustomRoutine {
+                        GenerateCustomRoutineView(location: location ?? Location(name: "", equipment: []), routine: routine)
+                    } else {
+                        ActiveWorkoutPageView(routine: routine)
+                    }
+                }) {
                     HStack {
                         Text(routine.name)
                             .font(.headline)

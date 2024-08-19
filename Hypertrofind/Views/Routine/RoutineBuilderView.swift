@@ -2,7 +2,7 @@ import SwiftUI
 import Foundation
 
 // Exercise Model
-struct Exercise: Codable, Identifiable {
+struct Exercise: Codable, Hashable{
     let name: String
     let force: String?
     let level: String
@@ -12,8 +12,6 @@ struct Exercise: Codable, Identifiable {
     let secondaryMuscles: [String]
     let instructions: [String]
     let category: String
-    let images: [String]
-    let id: String
 }
 
 // ViewModel for managing exercises
@@ -88,7 +86,7 @@ struct RoutineBuilderView: View {
 }
 
 // InputView to handle user input
-struct InputView: View {
+private struct InputView: View {
     @Binding var name: String
     @Binding var exercises: [RoutineExercise]
     var availableExercises: [Exercise]

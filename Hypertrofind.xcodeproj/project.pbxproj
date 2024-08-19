@@ -46,15 +46,20 @@
 		689310622C6E99BF0055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ActiveWorkoutPageView.swift,
-				ChartView.swift,
-				ContentView.swift,
-				LocationView.swift,
+				Chart/ChartView.swift,
+				Location/CustomLocation.swift,
+				Location/LocationView.swift,
+				Location/MapView.swift,
+				MainView.swift,
+				NavbarView.swift,
 				ProfileView.swift,
-				RoutineBuilderView.swift,
-				RoutineOptionsView.swift,
-				RoutineView.swift,
-				SetOptionsView.swift,
+				Routine/ActiveWorkoutPageView.swift,
+				Routine/GenerateCustomRoutineView.swift,
+				Routine/MusclesToTrainView.swift,
+				Routine/RoutineBuilderView.swift,
+				Routine/RoutineOptionsView.swift,
+				Routine/RoutineView.swift,
+				Routine/SetOptionsView.swift,
 				SignUpView.swift,
 			);
 			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
@@ -63,7 +68,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				completedRoutines.json,
-				exercises.json,
+				locations.json,
 				routines.json,
 			);
 			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
@@ -74,6 +79,7 @@
 				ChartData.swift,
 				HypertrofindApp.swift,
 				Item.swift,
+				LocationStructs.swift,
 				RoutineStructs.swift,
 				SaveLoadJson.swift,
 			);
@@ -391,6 +397,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to provide nearby fitness centers";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -448,6 +455,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "We need your location to provide nearby fitness centers";
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
