@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ActiveWorkoutPageView: View {
+struct ActiveWorkoutView: View {
     var routine: Routine
     
     var body: some View {
@@ -39,25 +39,40 @@ struct ActiveWorkoutPageView: View {
 struct ExerciseView: View {
     @State var exercise: RoutineExercise
     @State private var isEllipsisPressed = false
+    @State private var isQuestionPressed = false
     @State var deleteSet = false
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
                 VStack(alignment: .leading, spacing: 10) {
-                    Text(exercise.name)
-                        .font(.system(size: 30))
-                        .bold()
-                        .foregroundStyle(Color.secondaryElement)
-                    ForEach(1...exercise.sets, id: \.self) { setNum in
+                    HStack {
+                        Text(exercise.name)
+                            .font(.system(size: 30))
+                            .bold()
+                            .foregroundStyle(Color.secondaryElement)
+                        Spacer()
+                        Button(action: {
+                            isQuestionPressed.toggle()
+                        }) {
+                            Image(systemName: "info.circle")
+                                .font(.title2)
+                        }
+                    }
+                    .sheet(isPresented: $isQuestionPressed) {
+                        InstructionView(exercise: exercise)
+                            .presentationDetents([.fraction(0.99), .large])
+                    }
+                    
+                    ForEach(Array(exercise.sets.enumerated()), id: \.element) { index, set in
                         HStack(alignment: .bottom) {
-                            Image(systemName: "\(setNum).circle")
+                            Image(systemName: "\(index + 1).circle")
                                 .font(.title)
                             HStack(spacing: 15) {
                                 VStack {
                                     Text("lbs")
                                         .font(.caption)
                                         .foregroundStyle(Color.gray)
-                                    TextField("routine.exercise", value: $exercise.weight, formatter: NumberFormatter())
+                                    TextField("routine.exercise", value: $exercise.sets[index].weight, formatter: NumberFormatter())
                                         .keyboardType(.numberPad)
                                         .frame(width: 30)
                                         .padding(.top, -8)
@@ -66,7 +81,7 @@ struct ExerciseView: View {
                                     Text("reps")
                                         .font(.caption)
                                         .foregroundStyle(Color.gray)
-                                    TextField("routine.exercise", value: $exercise.reps, formatter: NumberFormatter())
+                                    TextField("routine.exercise", value: $exercise.sets[index].weight, formatter: NumberFormatter())
                                         .keyboardType(.numberPad)
                                         .frame(width: 30)
                                         .padding(.top, -8)
@@ -81,7 +96,7 @@ struct ExerciseView: View {
                                         .frame(maxHeight: .infinity)
                                 }
                                 .sheet(isPresented: $isEllipsisPressed) {
-                                    SetOptionsView(sets: $exercise.sets)
+                                    SetOptionsView(sets: $exercise.sets, index: index)
                                         .presentationDetents([.medium, .large])
                                 }
                             }
@@ -91,7 +106,7 @@ struct ExerciseView: View {
                     }
                     HStack {
                         Button(action: {
-                            exercise.sets += 1
+                            exercise.sets.append(ExerciseSet(reps: 10, weight: 100))
                         }) {
                             Image(systemName: "plus")
                                 .foregroundStyle(.white)
@@ -114,7 +129,8 @@ struct ExerciseView: View {
 
 struct FinishButton: View {
     var routine: Routine
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
+    @Environment(HypertrofindData.self) var data
     
     var body: some View {
         Button(action: finishWorkout) {
@@ -142,17 +158,19 @@ struct FinishButton: View {
     }
     
     private func finishWorkout() {
-        var completedRoutines: [CompletedRoutine] = loadJson(from: "completedRoutines.json") ?? []
+        var completedRoutines = data.completedRoutines
         var totalWeight = 0.0
         for exercise in routine.exercises {
             print("exercise: \(exercise.name)")
-            totalWeight += exercise.weight
+            for exerciseSet in exercise.sets {
+                totalWeight += exerciseSet.weight
+            }
         }
         let day = findDay(currentDate: Date())
         let completedRoutine = CompletedRoutine(routine: routine, weight: totalWeight, date: Date(), day: day)
         completedRoutines.append(completedRoutine)
-        saveJson(data: completedRoutines, to: "completedRoutines.json")
-        presentationMode.wrappedValue.dismiss()
+        saveJson(data: completedRoutines, to: "completedRoutines")
+        dismiss()
     }
     private func findDay(currentDate: Date) -> String {
         let dateFormatter = DateFormatter()
@@ -171,5 +189,5 @@ extension Color {
 }
 
 #Preview {
-    ActiveWorkoutPageView(routine: Routine(name: "Push", exercises: [RoutineExercise(name: "Bench Press", sets: 3, reps: 10, weight: 100)]))
+    ActiveWorkoutView(routine: Routine(name: "Push", exercises: [RoutineExercise(name: "Bench Press", sets: [ExerciseSet(reps: 10, weight: 100)], muscles: [], instructions: ["brother"])]))
 }

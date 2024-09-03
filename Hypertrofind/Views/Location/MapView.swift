@@ -57,17 +57,11 @@ struct MapView: View {
                                     }
                                     .onEnded { value in
                                         let snapPosition = geometry.size.height * 0.3
-                                        print("dragOffset \(dragOffset)")
-                                        print("locationViewOffset \(locationViewOffset)")
                                         // if the LocationView's difference between it's normal position and the length of the drag are greater than 3/4's of the screen's height, set the position of the LocationView to 1/2 of the screen's height.
-                                        //
                                         if locationViewOffset + dragOffset > snapPosition {
-                                            print("locationViewOffset \(locationViewOffset)")
-                                            print("dragOffset \(dragOffset)")
                                             locationViewOffset = geometry.size.height * 0.6
                                         } else {
                                             locationViewOffset = 0
-                                            print("height of screen: \(geometry.size.height)")
                                         }
                                         
                                         dragOffset = 0
@@ -108,7 +102,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Error: \(error.localizedDescription)")
+        print("Error w the location: \(error.localizedDescription)")
     }
 }
 

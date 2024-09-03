@@ -1,69 +1,34 @@
 import Foundation
 
-func findCompletedRoutines() -> [CompletedRoutine]? {
-    if let completedRoutines: [CompletedRoutine] = loadJson(from: "completedRoutines.json") {
-        // orders list from newest -> oldest
-        let orderedRoutines = completedRoutines.sorted { $0.day > $1.day }
-        return orderedRoutines
-    } else {
-        print("failed to load completed routines.")
-        return nil
+func findWeeklyCompletedRoutines(routines: [CompletedRoutine]) -> [LiftData] {
+    let today = Date()
+    let calendar = Calendar.current
+    var liftData = [LiftData]()
+    
+    // get the start of this week
+    guard let weekStart = calendar.dateInterval(of: .weekOfYear, for: today)?.start else {
+        return []
     }
-}
-func findWorkoutData() -> [LiftData] {
-    let defaultWorkoutData: [LiftData] = [LiftData(day: "Mon", weight: 90), LiftData(day: "Tue", weight: 135)]
-    var newWorkoutData = [LiftData]()
-    if let completedRoutines = findCompletedRoutines() {
-        if (completedRoutines.count >= 7) {
-            for i in (1...6) {
-                newWorkoutData.append(LiftData(day: completedRoutines[i].day, weight: completedRoutines[i].weight))
-            }
-            return newWorkoutData
-        } else {
-            for i in (0...(completedRoutines.count - 1)) {
-                newWorkoutData.append(LiftData(day: completedRoutines[i].day, weight: completedRoutines[i].weight))
-            }
-            return newWorkoutData
+    
+    // For each routine, check if it happened during this week, if it did, add it.
+    for routine in routines {
+        if routine.date > weekStart {
+            liftData.append(LiftData(day: routine.day, weight: routine.weight))
         }
-    } else {
-        print("Couldn't get the first completed routine.")
-        return defaultWorkoutData
     }
-}
-
-func findVolume() -> [LiftData] {
-    if let completedRoutines = findCompletedRoutines() {
-        let daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        var dailyWeights = [String: Double]()
-        var liftData = [LiftData]()
-        
-        for day in daysOfWeek {
-            var weight = 0.0
-            for completedRoutine in completedRoutines {
-                if completedRoutine.day == day {
-                    weight += completedRoutine.weight
-                }
-            }
-            dailyWeights[day] = weight
-        }
-        
-        for day in daysOfWeek {
-            if let weight = dailyWeights[day] {
-                liftData.append(LiftData(day: day, weight: weight))
-            }
-        }
-        
-        return liftData
-    }
-    return []
+    return liftData
 }
 
 func findAverageVolume(liftData: [LiftData]) -> Double {
-    var numToDivide = 0.0
+    var totalWeight = 0.0
+    var days: [String] = []
     for lift in liftData {
-        numToDivide += lift.weight
+        totalWeight += lift.weight
+        if !days.contains(lift.day) {
+            days.append(lift.day)
+        }
     }
-    return numToDivide/Double(liftData.count)
+    return totalWeight/Double(days.count)
 }
 
 func currentDayOfWeek() -> String {

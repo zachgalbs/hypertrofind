@@ -9,7 +9,8 @@ import SwiftUI
 
 struct SetOptionsView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var sets: Int
+    @Binding var sets: [ExerciseSet]
+    @State var index: Int
     var body: some View {
         ZStack {
             Color(red: 0.12, green: 0.12, blue: 0.12).edgesIgnoringSafeArea(.all)
@@ -28,7 +29,7 @@ struct SetOptionsView: View {
                 }
                 Spacer()
                 Button(action: {
-                    sets -= 1
+                    sets.remove(at: index)
                     dismiss()
                 }) {
                     HStack {
@@ -40,7 +41,7 @@ struct SetOptionsView: View {
                     }
                     .padding()
                 }
-                .background(Color(red: 0.2, green: 0.2, blue: 0.2))
+                .background(Colors.shared.backgroundColor)
                 .frame(width: 350)
                 .clipShape(.buttonBorder)
             }

@@ -3,11 +3,12 @@ import SwiftUI
 struct RoutineView: View {
     @State var fromLocationView: Bool = false
     @State var location: Location?
+    @Environment(HypertrofindData.self) var data
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(red: 0.2, green: 0.2, blue: 0.2)
-                    .edgesIgnoringSafeArea(.all)
+                Colors.shared.backgroundColor
+                    .ignoresSafeArea(.all)
                 VStack {
                     // For the top right button
                     HStack {
@@ -27,22 +28,24 @@ struct RoutineView: View {
 struct RoutineButtonsView: View {
     @State var fromLocationView: Bool
     @State var location: Location?
+    @Environment(HypertrofindData.self) var data
     var body: some View {
         VStack {
-            if let loadedRoutines: [Routine] = loadJson(from: "routines.json") {
-                if (!loadedRoutines.isEmpty) {
-                    HStack {
-                        ForEach(loadedRoutines, id: \.name) { routine in
-                            RoutineButtonView(routine: routine, generateCustomRoutine: fromLocationView, location: location)
-                        }
+            if (!data.routines.isEmpty) {
+                HStack {
+                    ForEach(data.routines, id: \.name) { routine in
+                        RoutineButtonView(routine: routine, generateCustomRoutine: fromLocationView, location: location)
                     }
                 }
-                else {
-                    Text("Get Started")
-                        .font(.title)
-                        .bold()
-                    Text("To get started, make your first routine")
-                }
+            }
+            else {
+                Text("Get Started")
+                    .font(.title)
+                    .bold()
+                    .foregroundStyle(Color.white)
+                Text("To get started, make your first routine")
+                    .foregroundStyle(Color.gray)
+                    .font(.title3)
             }
         }
         .padding(.top, 50)
@@ -54,15 +57,16 @@ struct RoutineButtonView: View {
     @State private var isEllipsisPressed = false
     @State var generateCustomRoutine: Bool
     @State var location: Location?
+    @State var counter: Int = 0
     
     var body: some View {
         GeometryReader { geometry in
             HStack(spacing: 16) { // Adjust spacing as needed
                 NavigationLink(destination: {
                     if generateCustomRoutine {
-                        GenerateCustomRoutineView(location: location ?? Location(name: "", equipment: []), routine: routine)
+                        GenerateView(location: location ?? Location(name: "", equipment: []), routine: routine)
                     } else {
-                        ActiveWorkoutPageView(routine: routine)
+                        ActiveWorkoutView(routine: routine)
                     }
                 }) {
                     HStack {
@@ -99,6 +103,7 @@ struct AddRoutineButton: View {
     @State private var moveUp = true
     @State private var isAnimating = true
     @State private var timer: Timer?
+    @Environment(HypertrofindData.self) var data
 
     var body: some View {
         NavigationStack {
@@ -113,10 +118,8 @@ struct AddRoutineButton: View {
                 }
             }
             .onAppear {
-                if let loadedRoutines: [Routine] = loadJson(from: "routines.json") {
-                    if (loadedRoutines.count <= 0) {
-                        startAnimation()
-                    }
+                if (data.routines.count <= 0) {
+                    startAnimation()
                 }
             }
         }

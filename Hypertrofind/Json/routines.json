@@ -1,36 +1,3 @@
 [
-  {
-    "name" : "Legs ",
-    "exercises" : [
-      {
-        "weight" : 50,
-        "reps" : 10,
-        "sets" : 3,
-        "name" : "Squats"
-      },
-      {
-        "sets" : 2,
-        "weight" : 50,
-        "reps" : 10,
-        "name" : "Leg Extensions"
-      },
-      {
-        "reps" : 10,
-        "weight" : 50,
-        "name" : "Leg Curls",
-        "sets" : 2
-      }
-    ]
-  },
-  {
-    "name" : "Push",
-    "exercises" : [
-      {
-        "sets" : 3,
-        "name" : "Bench",
-        "weight" : 50,
-        "reps" : 10
-      }
-    ]
-  }
+  
 ]

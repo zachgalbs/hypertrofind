@@ -8,10 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		688FE4CC2C197B03005F7327 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 688FE4CB2C197B03005F7327 /* Assets.xcassets */; };
-		688FE4CF2C197B03005F7327 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 688FE4CE2C197B03005F7327 /* Preview Assets.xcassets */; };
 		688FE4D92C197B03005F7327 /* HypertrofindTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FE4D82C197B03005F7327 /* HypertrofindTests.swift */; };
 		688FE4E32C197B03005F7327 /* HypertrofindUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FE4E22C197B03005F7327 /* HypertrofindUITests.swift */; };
 		688FE4E52C197B03005F7327 /* HypertrofindUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 688FE4E42C197B03005F7327 /* HypertrofindUITestsLaunchTests.swift */; };
+		68BADD7F2C8636AC00FAD2D9 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68BADD772C8636AC00FAD2D9 /* MainView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,12 +34,12 @@
 /* Begin PBXFileReference section */
 		688FE4C22C197B01005F7327 /* Hypertrofind.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hypertrofind.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		688FE4CB2C197B03005F7327 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		688FE4CE2C197B03005F7327 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		688FE4D42C197B03005F7327 /* HypertrofindTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HypertrofindTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		688FE4D82C197B03005F7327 /* HypertrofindTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HypertrofindTests.swift; sourceTree = "<group>"; };
 		688FE4DE2C197B03005F7327 /* HypertrofindUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HypertrofindUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		688FE4E22C197B03005F7327 /* HypertrofindUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HypertrofindUITests.swift; sourceTree = "<group>"; };
 		688FE4E42C197B03005F7327 /* HypertrofindUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HypertrofindUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		68BADD772C8636AC00FAD2D9 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -47,15 +47,15 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Chart/ChartView.swift,
-				Location/CustomLocation.swift,
+				Location/LocationBuilderView.swift,
 				Location/LocationView.swift,
 				Location/MapView.swift,
-				MainView.swift,
 				NavbarView.swift,
 				ProfileView.swift,
-				Routine/ActiveWorkoutPageView.swift,
-				Routine/GenerateCustomRoutineView.swift,
-				Routine/MusclesToTrainView.swift,
+				Routine/ActiveWorkoutView.swift,
+				Routine/GenerateView.swift,
+				Routine/InstructionView.swift,
+				Routine/MusclesView.swift,
 				Routine/RoutineBuilderView.swift,
 				Routine/RoutineOptionsView.swift,
 				Routine/RoutineView.swift,
@@ -64,24 +64,32 @@
 			);
 			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
 		};
-		689310642C6E99DA0055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		689310662C6E9A140055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ChartData.swift,
+				Color.swift,
+				HypertrofindApp.swift,
+				LocationStructs.swift,
+				RoutineStructs.swift,
+				SaveLoadJson.swift,
+			);
+			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
+		};
+		68BADDB62C866D1B00FAD2D9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				completedRoutines.json,
+				exercises.json,
 				locations.json,
 				routines.json,
 			);
 			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
 		};
-		689310662C6E9A140055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		68BADDBD2C866D2D00FAD2D9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				ChartData.swift,
-				HypertrofindApp.swift,
-				Item.swift,
-				LocationStructs.swift,
-				RoutineStructs.swift,
-				SaveLoadJson.swift,
+				"Preview Assets.xcassets",
 			);
 			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
 		};
@@ -89,8 +97,9 @@
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		689310612C6E99B20055B006 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (689310622C6E99BF0055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
-		689310632C6E99D60055B006 /* Json */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (689310642C6E99DA0055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Json; sourceTree = "<group>"; };
 		689310652C6E99F60055B006 /* Swift */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (689310662C6E9A140055B006 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Swift; sourceTree = "<group>"; };
+		68BADDB12C866D1B00FAD2D9 /* Json */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (68BADDB62C866D1B00FAD2D9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Json; sourceTree = "<group>"; };
+		68BADDBB2C866D2D00FAD2D9 /* Preview Content */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (68BADDBD2C866D2D00FAD2D9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Preview Content"; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,21 +150,14 @@
 		688FE4C42C197B01005F7327 /* Hypertrofind */ = {
 			isa = PBXGroup;
 			children = (
+				68BADD772C8636AC00FAD2D9 /* MainView.swift */,
 				689310612C6E99B20055B006 /* Views */,
 				689310652C6E99F60055B006 /* Swift */,
+				68BADDB12C866D1B00FAD2D9 /* Json */,
+				68BADDBB2C866D2D00FAD2D9 /* Preview Content */,
 				688FE4CB2C197B03005F7327 /* Assets.xcassets */,
-				689310632C6E99D60055B006 /* Json */,
-				688FE4CD2C197B03005F7327 /* Preview Content */,
 			);
 			path = Hypertrofind;
-			sourceTree = "<group>";
-		};
-		688FE4CD2C197B03005F7327 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				688FE4CE2C197B03005F7327 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		688FE4D72C197B03005F7327 /* HypertrofindTests */ = {
@@ -283,7 +285,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				688FE4CF2C197B03005F7327 /* Preview Assets.xcassets in Resources */,
 				688FE4CC2C197B03005F7327 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -309,6 +310,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68BADD7F2C8636AC00FAD2D9 /* MainView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

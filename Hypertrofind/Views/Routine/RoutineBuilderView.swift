@@ -1,71 +1,25 @@
 import SwiftUI
 import Foundation
 
-// Exercise Model
-struct Exercise: Codable, Hashable{
-    let name: String
-    let force: String?
-    let level: String
-    let mechanic: String?
-    let equipment: String?
-    let primaryMuscles: [String]
-    let secondaryMuscles: [String]
-    let instructions: [String]
-    let category: String
-}
-
-// ViewModel for managing exercises
-class ExerciseViewModel: ObservableObject {
-    @Published var exercises: [Exercise] = []
-    @Published var exerciseNames: [String] = []
-    init() {
-        if let exercises: [Exercise] = loadJson(from: "exercises.json") {
-            self.exercises = exercises
-        }
-        
-    }
-    
-    func printExercises() {
-        for exercise in exercises {
-            print(exercise.name)
-            exerciseNames.append(exercise.name)
-        }
-    }
-}
-
-
 struct RoutineBuilderView: View {
     @State private var name: String = ""
-    @State private var exercises: [RoutineExercise] = [RoutineExercise(name: "", sets: 3, reps: 10, weight: 50)]
-    @ObservedObject var viewModel = ExerciseViewModel()
-    @Environment(\.presentationMode) var presentationMode
+    @State private var exercises: [RoutineExercise] = []
+    @Environment(\.dismiss) var dismiss
+    @Environment(HypertrofindData.self) var data
     
     var body: some View {
         ZStack {
-            Color(red: 0.2, green: 0.2, blue: 0.2)
-                .edgesIgnoringSafeArea(.all)
+            Colors.shared.backgroundColor
+                .ignoresSafeArea(.all)
             VStack {
-                InputView(name: $name, exercises: $exercises, availableExercises: viewModel.exercises, exerciseNames: viewModel.exerciseNames)
+                InputView(name: $name, exercises: $exercises, availableExercises: data.exercises)
                 Spacer()
                 HStack() {
                     Button(action: {
-                        exercises.append(RoutineExercise(name: "", sets: 2, reps: 10, weight: 50))
-                    }) {
-                        Text("New Exercise")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .padding()
-                            .background(Color.gray)
-                            .cornerRadius(15)
-                            .foregroundColor(.white)
-                            .shadow(radius: 15)
-                    }
-                    Button(action: {
-                        var routines: [Routine] = loadJson(from: "routines.json") ?? []
                         let routine = Routine(name: name, exercises: exercises)
-                        routines.append(routine)
-                        saveJson(data: routines, to: "routines.json")
-                        presentationMode.wrappedValue.dismiss()
+                        data.routines.append(routine)
+                        saveJson(data: data.routines, to: "routines")
+                        dismiss()
                     }) {
                         Text("Done")
                             .font(.title2)
@@ -90,16 +44,15 @@ private struct InputView: View {
     @Binding var name: String
     @Binding var exercises: [RoutineExercise]
     var availableExercises: [Exercise]
-    var exerciseNames: [String]
     @State var draggedOffset: CGFloat = 0
     @State private var indexToRemove: Int? = 0
+    @State private var showSheet: Bool = false
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(red: 0.2, green: 0.2, blue: 0.2)
-                    .edgesIgnoringSafeArea(.all)
-                
+                Colors.shared.backgroundColor
+                    .ignoresSafeArea(.all)
                 VStack(alignment: .leading, spacing: 20) {
                     VStack {
                         Text("Name")
@@ -111,23 +64,75 @@ private struct InputView: View {
                             .cornerRadius(10)
                             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
                     }
-                    List {
-                        ForEach(exercises.indices, id: \.self) { index in
-                            TextField("Enter exercise \(index + 1)", text: $exercises[index].name)
-                                .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
+                    VStack {
+                        HStack {
+                            Text("Exercises")
+                                .bold()
+                                .font(.title2)
+                            Spacer()
+                            Button(action: {
+                                showSheet.toggle()
+                            }) {
+                                Image(systemName: "plus.app")
+                                    .font(.title2)
+                            }
                         }
-                        .onDelete(perform: delete)
+                        List {
+                            ForEach(exercises, id: \.self) { exercise in
+                                Text(exercise.name)
+                            }
+                            .onDelete(perform: delete)
+                        }
+                        .navigationTitle("New Routine")
                     }
-                    .navigationTitle("New Routine")
                     Spacer()
                 }
                 .padding()
             }
         }
+        .sheet(isPresented: $showSheet, content: {
+            SheetView(selectedExercises: $exercises)
+        })
     }
     
     func delete(at offsets: IndexSet) {
         exercises.remove(atOffsets: offsets)
+    }
+}
+struct SheetView: View {
+    @State private var searchText: String = ""
+    @Environment(\.dismiss) var dismiss
+    @Environment(HypertrofindData.self) var data
+    @Binding var selectedExercises: [RoutineExercise]
+    var body: some View {
+        NavigationView {
+            List {
+                ForEach(filteredExercises, id: \.self) { exercise in
+                    Button(action: {
+                        selectedExercises.append(makeRoutineExercise(exercise: exercise))
+                        dismiss()
+                    }) {
+                        Text(exercise.name)
+                    }
+                }
+            }
+        }
+        .searchable(text: $searchText, prompt: "Search")
+    }
+    private var filteredExercises: [Exercise] {
+        if (searchText.isEmpty) {
+            return data.exercises
+        } else {
+            return data.exercises.filter {$0.name.localizedCaseInsensitiveContains(searchText)}
+        }
+    }
+    private func makeRoutineExercise(exercise: Exercise) -> RoutineExercise {
+        let name = exercise.name
+        let sets = [ExerciseSet(reps: 10, weight: 100)]
+        let muscles = exercise.primaryMuscles
+        let instructions = exercise.instructions
+        let equipment = exercise.equipment
+        return RoutineExercise(name: name, sets: sets, muscles: muscles, instructions: instructions, equipment: equipment)
     }
 }
 

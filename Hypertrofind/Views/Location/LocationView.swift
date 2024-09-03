@@ -5,6 +5,7 @@ struct LocationView: View {
     @State private var items: [Location] = []
     @Binding var isSearchBarActive: Bool
     @State var selectedEquipment: [String] = []
+    @Environment(HypertrofindData.self) var data
     var filteredItems: [Location] {
         if searchText.isEmpty {
             return items.map { $0 }
@@ -19,26 +20,18 @@ struct LocationView: View {
             NavigationView {
                 VStack(alignment: .leading) {
                     List {
-//                        Section(header: Text("Recents")
-//                            .font(.title3)
-//                            .foregroundColor(.black)
-//                            .bold()
-//                            .textCase(nil)
-//                            .padding(0)
-//                        ) {
-                            ForEach(filteredItems, id: \.self) { item in
-                                NavigationLink(destination: RoutineView(fromLocationView: true, location: item)) {
-                                    Text(item.name)
-                                }
+                        ForEach(filteredItems, id: \.self) { item in
+                            NavigationLink(destination: MusclesView(location: item) ) {
+                                Text(item.name)
                             }
-                        //}
+                        }
                     }
                 }
                 .searchable(text: $searchText, prompt: "24 hour fitness...")
                 .navigationTitle("Locations")
                 .toolbar(content: {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink(destination: CustomLocation()){
+                        NavigationLink(destination: LocationBuilderView()){
                             Image(systemName: "plus.app")
                                 .foregroundStyle(Color.black)
                                 .font(.title2)
@@ -47,9 +40,7 @@ struct LocationView: View {
                 })
             }
             .onAppear {
-                if let locations: [Location] = loadJson(from: "locations.json") {
-                    items = locations
-                }
+                items = data.locations
             }
         }
         .background(Color.white) // Set the background color of the sheet

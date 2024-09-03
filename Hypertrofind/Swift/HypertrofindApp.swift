@@ -1,32 +1,61 @@
-//
-//  HypertrofindApp.swift
-//  Hypertrofind
-//
-//  Created by Zachary Galbraith on 6/11/24.
-//
-
 import SwiftUI
 import SwiftData
 
 @main
 struct HypertrofindApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    @State private var data = HypertrofindData()
     var body: some Scene {
         WindowGroup {
             MainView()
+                .environment(data)
         }
-        .modelContainer(sharedModelContainer)
+    }
+}
+
+@Observable class HypertrofindData {
+    var routines: [Routine] = []
+    var completedRoutines: [CompletedRoutine] = []
+    var locations: [Location] = []
+    var exercises: [Exercise] = []
+    
+    
+    init() {
+        loadRoutines()
+        loadCompletedRoutines()
+        loadLocations()
+        loadExercises()
+    }
+    func loadExercises() {
+        if let loadedExercises: [Exercise] = loadJson(from: "exercises") {
+            self.exercises = loadedExercises
+            print("got the exercises")
+        } else {
+            print("couldn't get the exercises")
+        }
+    }
+    
+    func loadLocations() {
+        if let loadedLocations: [Location] = loadJson(from: "locations") {
+            self.locations = loadedLocations
+            print("Got the locations")
+        } else {
+            print("Couldn't get the locations")
+        }
+    }
+    func loadCompletedRoutines() {
+        if let loadedCompletedRoutines: [CompletedRoutine] = loadJson(from: "completedRoutines") {
+            self.completedRoutines = loadedCompletedRoutines
+            print("loaded completedRoutines")
+        } else {
+            print("couldn't load completedRoutines")
+        }
+    }
+    func loadRoutines() {
+        if let loadedRoutines: [Routine] = loadJson(from: "routines") {
+            self.routines = loadedRoutines
+            print("Loaded routines: \(routines)")
+        } else {
+            print("Failed to load routines.")
+        }
     }
 }

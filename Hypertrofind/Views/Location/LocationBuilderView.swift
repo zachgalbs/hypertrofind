@@ -1,18 +1,17 @@
 import SwiftUI
 import Foundation
-
-struct CustomLocation: View {
+struct LocationBuilderView: View {
     @State var name: String = ""
     @State var equipment: [String] = []
-    @ObservedObject var viewModel = ExerciseViewModel()
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
+    @Environment(HypertrofindData.self) var data
     @State private var showSheet = false
     
     var body: some View {
         NavigationStack {
             ZStack {
-                Color(red: 0.2, green: 0.2, blue: 0.2)
-                    .edgesIgnoringSafeArea(.all)
+                Colors.shared.backgroundColor
+                    .ignoresSafeArea(.all)
                 VStack {
                     
                     Text("New Location")
@@ -46,13 +45,13 @@ struct CustomLocation: View {
                     EquipmentListView(name: $name, equipment: $equipment)
                     
                     Button(action: {
-                        var locations: [Location] = loadJson(from: "locations.json") ?? []
+                        var locations: [Location] = data.locations
                         let lowercaseEquipment: [String] = equipment.map { $0.lowercased() }
                         if name == "" {name = "Untitled"}
                         let location = Location(name: name, equipment: lowercaseEquipment)
                         locations.append(location)
-                        saveJson(data: locations, to: "locations.json")
-                        presentationMode.wrappedValue.dismiss()
+                        saveJson(data: locations, to: "locations")
+                        dismiss()
                     }) {
                         Text("Done")
                             .font(.title2)
@@ -111,6 +110,7 @@ struct searchSheetView: View {
     @Binding var equipment: [String]
     @State var pieceOfEquipment: String = ""
     @Environment(\.dismiss) var dismiss
+    @Environment(HypertrofindData.self) var data
     
     var body: some View {
         NavigationView {
@@ -125,7 +125,7 @@ struct searchSheetView: View {
                     }
                 }
             }
-            .background(Color(red: 0.2, green: 0.2, blue: 0.2))
+            .background(Colors.shared.backgroundColor)
             .onAppear {
                 possibleEquipment = findPossibleEquipment()
             }
@@ -144,13 +144,10 @@ struct searchSheetView: View {
 
     private func findPossibleEquipment() -> [String] {
         var equipment: [String] = []
-        if let exercises: [Exercise] = loadJson(from: "exercises.json") {
-            for exercise in exercises {
-                if let equip = exercise.equipment {
-                    if !equipment.contains(equip) {
-                        equipment.append(equip)
-                    }
-                }
+        for exercise in data.exercises {
+            let equip = exercise.equipment
+            if !equipment.contains(equip) {
+                equipment.append(equip)
             }
         }
         return equipment
@@ -158,5 +155,5 @@ struct searchSheetView: View {
 }
 
 #Preview {
-    CustomLocation()
+    LocationBuilderView()
 }

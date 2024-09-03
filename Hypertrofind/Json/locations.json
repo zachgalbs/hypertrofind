@@ -1,40 +1,39 @@
 [
   {
+    "name" : "Garage",
     "equipment" : [
       "Barbell",
       "Bench",
       "Dumbbell"
-    ],
-    "name" : "Garage"
+    ]
   },
   {
-    "name" : "Other garage",
     "equipment" : [
       "Squat rack",
       "Bench",
       "Cable"
-    ]
+    ],
+    "name" : "Other garage"
   },
   {
-    "name" : "Example",
     "equipment" : [
       "dumbbell"
-    ]
+    ],
+    "name" : "Example"
   },
   {
-    "name" : "Other example",
     "equipment" : [
       "Dumbbell"
-    ]
+    ],
+    "name" : "Other example"
   },
   {
-    "name" : "UC",
     "equipment" : [
       "dumbbell"
-    ]
+    ],
+    "name" : "UC"
   },
   {
-    "name" : "Untitled",
     "equipment" : [
       "body only",
       "kettlebells",
@@ -42,6 +41,23 @@
       "barbell",
       "smith machine",
       "dumbbell"
-    ]
+    ],
+    "name" : "Untitled"
+  },
+  {
+    "equipment" : [
+      "cable",
+      "barbell",
+      "dumbbell"
+    ],
+    "name" : "Adi’s house"
+  },
+  {
+    "equipment" : [
+      "pull up bar",
+      "parallel bar",
+      "bench"
+    ],
+    "name" : "Park"
   }
 ]
