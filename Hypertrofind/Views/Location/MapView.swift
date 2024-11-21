@@ -19,12 +19,9 @@ struct MapView: View {
                     if let userLocation = locationManager.lastLocation {
                         Marker("Random Location", coordinate: userLocation.coordinate)
                         Annotation("Random Annotation", coordinate: CLLocationCoordinate2D(latitude: 37.3317, longitude: -122.1302)) {
-                            ZStack {
-                                RoundedRectangle(cornerRadius: 5)
-                                    .fill(Color.yellow)
-                                Text("😁")
-                                    .padding(5)
-                            }
+                            Circle()
+                                .fill(Color.yellow)
+                                .frame(width: 20, height: 20)
                         }
                     }
                 }
