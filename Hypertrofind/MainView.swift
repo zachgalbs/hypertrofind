@@ -9,19 +9,20 @@ struct MainView: View {
             
             VStack {
                 TabView(selection: $selectedTab) {
-                    ChartView()
-                        .tabItem {
-                            Image(systemName: "chart.line.uptrend.xyaxis")
-                            Text("Chart")
-                        }
-                        .tag(0)
-                    
                     RoutineView()
                         .tabItem {
                             Image(systemName: "figure.strengthtraining.traditional")
                             Text("Strength")
                         }
+                        .tag(0)
+                    
+                    ChartView()
+                        .tabItem {
+                            Image(systemName: "chart.line.uptrend.xyaxis")
+                            Text("Chart")
+                        }
                         .tag(1)
+                    
                     MapView()
                         .tabItem {
                             Image(systemName: "location.fill")

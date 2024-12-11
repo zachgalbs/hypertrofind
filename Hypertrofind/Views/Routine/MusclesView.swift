@@ -97,7 +97,6 @@ struct MusclesView: View {
                 }
             }
         }
-        print(muscles)
     }
     
     private func toggleSelection(of muscle: String) {

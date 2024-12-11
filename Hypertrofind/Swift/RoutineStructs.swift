@@ -26,8 +26,8 @@ struct RoutineExercise: Codable, Hashable {
 }
 
 struct ExerciseSet: Codable, Hashable {
-    var reps: Double
-    var weight: Double
+    var reps: Double?
+    var weight: Double?
 }
 
 struct CompletedRoutine: Codable, Hashable {

@@ -79,10 +79,8 @@
 		68BADDB62C866D1B00FAD2D9 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				completedRoutines.json,
 				exercises.json,
 				locations.json,
-				routines.json,
 			);
 			target = 688FE4C12C197B01005F7327 /* Hypertrofind */;
 		};

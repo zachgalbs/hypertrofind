@@ -22,7 +22,6 @@ struct RoutineOptionsView: View {
                 }
                 Spacer()
                 Button(action: {
-                    print("something")
                     deleteRoutine()
                     dismiss()
                 }) {
@@ -42,7 +41,6 @@ struct RoutineOptionsView: View {
         }
     }
     private func deleteRoutine() {
-        print("deleted!")
         data.routines.removeAll { $0.hashValue == routine.hashValue }
         saveJson(data: data.routines, to: "routines")
     }

@@ -36,87 +36,108 @@ struct ActiveWorkoutView: View {
     }
 }
 
+// Makes view for each exercise
 struct ExerciseView: View {
+    // Passed from ActiveWorkoutView
     @State var exercise: RoutineExercise
     @State private var isEllipsisPressed = false
     @State private var isQuestionPressed = false
+    @FocusState private var isWeightFocused: Bool
+    @FocusState private var isRepsFocused: Bool
     @State var deleteSet = false
     var body: some View {
+        // Background color (gray) and padding
         VStack(alignment: .leading) {
-            HStack {
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        Text(exercise.name)
-                            .font(.system(size: 30))
-                            .bold()
-                            .foregroundStyle(Color.secondaryElement)
-                        Spacer()
-                        Button(action: {
-                            isQuestionPressed.toggle()
-                        }) {
-                            Image(systemName: "info.circle")
-                                .font(.title2)
-                        }
-                    }
-                    .sheet(isPresented: $isQuestionPressed) {
-                        InstructionView(exercise: exercise)
-                            .presentationDetents([.fraction(0.99), .large])
-                    }
-                    
-                    ForEach(Array(exercise.sets.enumerated()), id: \.element) { index, set in
-                        HStack(alignment: .bottom) {
-                            Image(systemName: "\(index + 1).circle")
-                                .font(.title)
-                            HStack(spacing: 15) {
-                                VStack {
-                                    Text("lbs")
-                                        .font(.caption)
-                                        .foregroundStyle(Color.gray)
-                                    TextField("routine.exercise", value: $exercise.sets[index].weight, formatter: NumberFormatter())
-                                        .keyboardType(.numberPad)
-                                        .frame(width: 30)
-                                        .padding(.top, -8)
-                                }
-                                VStack {
-                                    Text("reps")
-                                        .font(.caption)
-                                        .foregroundStyle(Color.gray)
-                                    TextField("routine.exercise", value: $exercise.sets[index].weight, formatter: NumberFormatter())
-                                        .keyboardType(.numberPad)
-                                        .frame(width: 30)
-                                        .padding(.top, -8)
-                                }
-                            }
-                            Spacer()
-                            VStack {
-                                Button(action: {
-                                    isEllipsisPressed.toggle()
-                                }) {
-                                    Image(systemName: "ellipsis")
-                                        .frame(maxHeight: .infinity)
-                                }
-                                .sheet(isPresented: $isEllipsisPressed) {
-                                    SetOptionsView(sets: $exercise.sets, index: index)
-                                        .presentationDetents([.medium, .large])
-                                }
-                            }
-                        }
-                        Divider()
-                            .background(Color.white)
-                    }
-                    HStack {
-                        Button(action: {
-                            exercise.sets.append(ExerciseSet(reps: 10, weight: 100))
-                        }) {
-                            Image(systemName: "plus")
-                                .foregroundStyle(.white)
-                                .padding(.top)
-                        }
+            // Holds everything inside the background
+            VStack(alignment: .leading, spacing: 10) {
+                // Title of Exercise and info button
+                HStack {
+                    Text(exercise.name)
+                        .font(.system(size: 30))
+                        .bold()
+                        .foregroundStyle(Color.secondaryElement)
+                    Spacer()
+                    Button(action: {
+                        isQuestionPressed.toggle()
+                    }) {
+                        Image(systemName: "info.circle")
+                            .font(.title2)
                     }
                 }
+                .sheet(isPresented: $isQuestionPressed) {
+                    InstructionView(exercise: exercise)
+                        .presentationDetents([.fraction(0.99), .large])
+                }
+                
+                // Index each set and give it a unique id based on something
+                ForEach(Array(exercise.sets.enumerated()), id: \.offset) { index, set in
+                    HStack(alignment: .bottom) {
+                        Image(systemName: "\(index + 1).circle")
+                            .font(.title)
+                        HStack(spacing: 15) {
+                            VStack {
+                                Text("lbs")
+                                    .font(.caption)
+                                    .foregroundStyle(Color.gray)
+                                if index < exercise.sets.count {
+                                    TextField("45", value: $exercise.sets[index].weight, formatter: NumberFormatter())
+                                        .keyboardType(.numberPad)
+                                        .frame(width: 50)
+                                        .padding(.top, -8)
+                                        .focused($isWeightFocused)
+                                        .font(.title3)
+                                } else {
+                                    Text("Invalid index")
+                                }
+                            }
+                            .onAppear {
+                                print(exercise.sets[index])
+                            }
+                            VStack {
+                                Text("reps")
+                                    .font(.caption)
+                                    .foregroundStyle(Color.gray)
+                                TextField("8", value: $exercise.sets[index].reps, formatter: NumberFormatter())
+                                    .keyboardType(.numberPad)
+                                    .frame(width: 50)
+                                    .padding(.top, -8)
+                                    .focused($isRepsFocused)
+                                    .font(.title3)
+                            }
+                        }
+                        Spacer()
+                        VStack {
+                            Button(action: {
+                                isEllipsisPressed.toggle()
+                            }) {
+                                Image(systemName: "ellipsis")
+                                    .frame(maxHeight: .infinity)
+                            }
+                            .sheet(isPresented: $isEllipsisPressed) {
+                                SetOptionsView(sets: $exercise.sets, index: index)
+                                    .presentationDetents([.medium, .large])
+                            }
+                        }
+                    }
+                    Divider()
+                        .background(Color.white)
+                }
+                HStack {
+                    Button(action: {
+                        exercise.sets.append(ExerciseSet())
+                    }) {
+                        Image(systemName: "plus")
+                            .foregroundStyle(.white)
+                            .padding(.top)
+                    }
+                }
+            }
                 .padding()
                 Spacer()
-            }
+        }
+        .onTapGesture {
+            isWeightFocused = false
+            isRepsFocused = false
         }
         .frame(width: 350)
         .background(Color.tertiaryElement)
@@ -161,9 +182,8 @@ struct FinishButton: View {
         var completedRoutines = data.completedRoutines
         var totalWeight = 0.0
         for exercise in routine.exercises {
-            print("exercise: \(exercise.name)")
             for exerciseSet in exercise.sets {
-                totalWeight += exerciseSet.weight
+                totalWeight += exerciseSet.weight ?? 0
             }
         }
         let day = findDay(currentDate: Date())
@@ -189,5 +209,5 @@ extension Color {
 }
 
 #Preview {
-    ActiveWorkoutView(routine: Routine(name: "Push", exercises: [RoutineExercise(name: "Bench Press", sets: [ExerciseSet(reps: 10, weight: 100)], muscles: [], instructions: ["brother"])]))
+    ActiveWorkoutView(routine: Routine(name: "Push", exercises: [RoutineExercise(name: "Bench Press", sets: [ExerciseSet()], muscles: [], instructions: ["brother"])]))
 }

@@ -1,31 +1,13 @@
 import SwiftUI
 import Charts
 
-@Observable class ChartData {
-    let workoutData: [LiftData]
-    let averageWeight: Double
-    let currentDay: String
-    var maxWeight: Double
-    
-    init(completedRoutines: [CompletedRoutine]) {
-        self.workoutData = findWeeklyCompletedRoutines(routines: completedRoutines)
-        self.averageWeight = findAverageVolume(liftData: workoutData)
-        self.currentDay = currentDayOfWeek()
-        self.maxWeight = findMaxWeight(liftData: workoutData)
-    }
-}
-
-// Define your data model
-struct LiftData: Identifiable {
-    let id = UUID()
-    let day: String
-    let weight: Double
-}
 
 struct ChartView: View {
+    // Referencing the Observable HypertrofindData class
     @Environment(HypertrofindData.self) var data
     var body: some View {
-        let chartData = ChartData(completedRoutines: data.completedRoutines)
+        // Only used to check if we have any completed routines
+        let completedRoutines = data.completedRoutines
         ZStack {
             Color.gray.ignoresSafeArea()
             
@@ -39,7 +21,7 @@ struct ChartView: View {
                     }
                     .padding([.horizontal, .top]) // Added padding to align with VStacks
                     
-                    if (chartData.workoutData.isEmpty) {
+                    if (completedRoutines.isEmpty) {
                         ZStack {
                             ActivityView()
                                 .opacity(0.5)
@@ -86,6 +68,7 @@ struct FatigueView: View {
 struct ActivityView: View {
     @Environment(HypertrofindData.self) var data
     var body: some View {
+        // This time we want to have access to things like the average weight, the current day, and the max weight, so we instantiate ChartData, a class that takes a list of completedRoutines and returns a list of variables
         let chartData = ChartData(completedRoutines: data.completedRoutines)
         VStack {
             ZStack {
@@ -122,9 +105,11 @@ struct ActivityView: View {
 struct BarChart: View {
     @Environment(HypertrofindData.self) var data
     var body: some View {
+        Text("something")
         let chartData = ChartData(completedRoutines: data.completedRoutines)
         VStack {
             Chart {
+                // For each workout, get the data and list it.
                 ForEach(chartData.workoutData) { data in
                     BarMark(
                         x: .value("Day", data.day),
@@ -145,7 +130,7 @@ struct BarChart: View {
                 }
             }
             .frame(height: 200)
-            .padding(.horizontal) // Horizontal padding for consistent layout
+            .padding(.horizontal)
             .chartXScale(range: .plotDimension)
             .chartXAxis {
                 AxisMarks(values: .automatic) { value in

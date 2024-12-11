@@ -8,12 +8,12 @@ struct NavbarView: View {
             Spacer()
             
             HStack {
-                NavBarItem(iconName: "chart.line.uptrend.xyaxis", isSelected: selectedTab == 0)
+                NavBarItem(iconName: "figure.strengthtraining.traditional", isSelected: selectedTab == 0)
                     .onTapGesture { selectedTab = 0 }
                 
                 Spacer()
                 
-                NavBarItem(iconName: "figure.strengthtraining.traditional", isSelected: selectedTab == 1)
+                NavBarItem(iconName: "chart.line.uptrend.xyaxis", isSelected: selectedTab == 1)
                     .onTapGesture { selectedTab = 1 }
                 
                 Spacer()

@@ -17,7 +17,7 @@ struct MapView: View {
             ZStack {
                 Map {
                     if let userLocation = locationManager.lastLocation {
-                        Marker("Random Location", coordinate: userLocation.coordinate)
+                        Marker("User location", coordinate: userLocation.coordinate)
                         Annotation("Random Annotation", coordinate: CLLocationCoordinate2D(latitude: 37.3317, longitude: -122.1302)) {
                             Circle()
                                 .fill(Color.yellow)

@@ -30,9 +30,13 @@ struct RoutineButtonsView: View {
     @State var location: Location?
     @Environment(HypertrofindData.self) var data
     var body: some View {
+        let columns = [
+            GridItem(.flexible()),
+            GridItem(.flexible())
+        ]
         VStack {
             if (!data.routines.isEmpty) {
-                HStack {
+                LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(data.routines, id: \.name) { routine in
                         RoutineButtonView(routine: routine, generateCustomRoutine: fromLocationView, location: location)
                     }
@@ -61,7 +65,7 @@ struct RoutineButtonView: View {
     
     var body: some View {
         GeometryReader { geometry in
-            HStack(spacing: 16) { // Adjust spacing as needed
+            HStack(spacing: 16) {
                 NavigationLink(destination: {
                     if generateCustomRoutine {
                         GenerateView(location: location ?? Location(name: "", equipment: []), routine: routine)
